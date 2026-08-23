@@ -321,3 +321,11 @@ Renderでのデプロイに対応しており、Rails との相性も良いた�
 **不安な点とその対策：**
 外部APIの導入や複雑な機能追加により、開発工数が増加して目標期日に遅れるリスクがあること。
 対策として、まずはRailsの標準機能のみを用いたシンプルな手入力フォームでMVPを最速リリースし、外部APIや高度なソート機能等は本リリース以降に段階的に実装すること。
+
+
+---
+
+
+## 11. 画面遷移図
+
+Figma：https://www.figma.com/design/WQKSmlXV0Wz9FabuJLlhFM/gol-log%E3%80%80%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3?node-id=1-2&t=yCzon4jASdOQjmUC-1
