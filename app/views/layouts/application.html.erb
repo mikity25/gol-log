@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Myapp" %></title>
+    <title><%= content_for(:title) || "GOL-LOG - 自分専用ゴルフ場カルテ" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Myapp">
+    <meta name="application-name" content="GOL-LOG">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -23,7 +23,16 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body style="margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh;">
+    <!-- ① 共通ヘッダーの呼び出し -->
+    <%= render "shared/header" %>
+
+    <!-- ② メインコンテンツ（各ページの画面が入る） -->
+    <main style="flex: 1;">
+      <%= yield %>
+    </main>
+
+    <!-- ③ 共通フッターの呼び出し -->
+    <%= render "shared/footer" %>
   </body>
 </html>
