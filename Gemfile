@@ -1,65 +1,76 @@
 source "https://rubygems.org"
 
-# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+# Rails本体
 gem "rails", "~> 8.1.3", ">= 8.1.3.1"
-# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
+
+# アセット管理（JavaScript / CSS / 画像など）
 gem "propshaft"
-# Use postgresql as the database for Active Record
+
+# データベース（PostgreSQL）用接続ライブラリ
 gem "pg", "~> 1.1"
-# Use the Puma web server [https://github.com/puma/puma]
+
+# Webサーバー（Puma）
 gem "puma", ">= 5.0"
-# Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
+
+# JavaScriptおよびCSSのビルドツール
 gem "jsbundling-rails"
-# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem "turbo-rails"
-# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
-gem "stimulus-rails"
-# Bundle and process CSS [https://github.com/rails/cssbundling-rails]
 gem "cssbundling-rails"
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
+
+# 画面遷移の高速化・非同期処理（Hotwire）
+gem "turbo-rails"
+gem "stimulus-rails"
+
+# JSONデータの生成ツール
 gem "jbuilder"
 
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+# ユーザー認証・ログイン機能（Devise）と暗号化（bcrypt）
+gem "bcrypt", "~> 3.1.7"
+gem "devise"
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+# Windows環境用のタイムゾーンデータ
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
-# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
+# Rails標準のキャッシュ・非同期処理・リアルタイム通信用機能
 gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 
-# Reduces boot times through caching; required in config/boot.rb
+# 起動時間の短縮用キャッシュ機能
 gem "bootsnap", require: false
 
-# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
+# アセットのキャッシュ圧縮および転送高速化
 gem "thruster", require: false
 
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+# 画像処理（Active Storage用）
 gem "image_processing", "~> 1.2"
 
+# 開発環境およびテスト環境でのみ使用するGem
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  # デバッグツール
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
-  # Audits gems for known security defects (use config/bundler-audit.yml to ignore issues)
+  # セキュリティ脆弱性の自動チェックツール
   gem "bundler-audit", require: false
-
-  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
-  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
+  # コード書き方のルールチェックツール（RuboCop）
   gem "rubocop-rails-omakase", require: false
+  gem "rubocop-rails", require: false
+
+  # 自動テスト用ツール（RSpec / FactoryBot）
+  gem "rspec-rails"
+  gem "factory_bot_rails"
 end
 
+# 開発環境でのみ使用するGem
 group :development do
-  # Use console on exceptions pages [https://github.com/rails/web-console]
+  # エラー画面上で直接コードを実行して調べるデバッグツール
   gem "web-console"
 end
 
+# テスト環境でのみ使用するGem
 group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  # ブラウザ動作確認用のテストツール
   gem "capybara"
   gem "selenium-webdriver"
 end
