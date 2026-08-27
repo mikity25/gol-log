@@ -12,6 +12,11 @@ class RecordsController < ApplicationController
     @record = Record.new
   end
 
+  def show
+    # 他人のカルテを見られないよう current_user.records から取得（セキュリティ対策）
+    @record = current_user.records.find(params[:id])
+  end
+
   def create
     # ログイン中のユーザーに紐付いた新しいカルテを作成する
     @record = current_user.records.build(record_params)
@@ -21,7 +26,7 @@ class RecordsController < ApplicationController
       redirect_to records_path, notice: "ゴルフカルテを作成しました！⛳️"
     else
       # 保存に失敗した場合：エラー内容を持ったまま新規作成画面を再表示
-      flash.now[:alert] = "カルテの作成に失敗しました。"
+      flash.now[:alert] = "カルテの作成に失敗しました。入力内容を確認してください。"
       render :new, status: :unprocessable_entity
     end
   end
@@ -29,13 +34,17 @@ class RecordsController < ApplicationController
   private
 
   # 🔐 ストロングパラメーター（不正データ防止のセキュリティ機能）
-  def record_params
+def record_params
     params.require(:record).permit(
       :golf_course_name,
       :played_on,
       :satisfaction,
       :score_18h,
       :score_9h,
+      :converted_score_18h,
+      :difficulty,
+      :food,
+      :facility,
       :memo
     )
   end
