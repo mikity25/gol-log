@@ -33,7 +33,7 @@ class RecordsController < ApplicationController
 
   private
 
-  # 🔐 ストロングパラメーター（不正データ防止のセキュリティ機能）
+# 🔐 ストロングパラメーター（不正データ防止のセキュリティ機能）
 def record_params
     params.require(:record).permit(
       :golf_course_name,
