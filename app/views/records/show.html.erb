@@ -88,9 +88,13 @@
         </div>
       </div>
 
-      <!-- アクションボタン枠（編集・削除は今後のIssueで接続） -->
-      <div class="border-t border-slate-100 pt-5 flex items-center justify-end gap-3">
-        <%= link_to "一覧へ戻る", records_path, class: "px-4 py-2 text-sm text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition" %>
+      <!-- 「編集する」ボタン -->
+      <div class="border-t border-slate-100 pt-5 flex items-center justify-between">
+        <%= link_to "← 一覧へ戻る", records_path, class: "px-4 py-2 text-sm text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition" %>
+        <div class="flex items-center gap-3">
+          <!-- 編集ボタン -->
+          <%= link_to "✏️ 編集する", edit_record_path(@record), class: "px-4 py-2 text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg shadow transition" %>
+        </div>
       </div>
     </div>
   </div>

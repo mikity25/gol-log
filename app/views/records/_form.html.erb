@@ -1,0 +1,78 @@
+<%= form_with model: record, class: "space-y-6" do |f| %>
+  <!-- エラーメッセージ表示エリア（入力ミスがあった時に赤く出す） -->
+  <% if record.errors.any? %>
+    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
+      <ul class="list-disc list-inside text-sm text-red-700">
+        <% record.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- ゴルフ場名（必須） -->
+  <div>
+    <div class="flex items-center gap-2 mb-1">
+      <%= f.label :golf_course_name, "ゴルフ場名", class: "text-sm font-semibold text-gray-700" %>
+      <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">必須</span>
+    </div>
+    <%= f.text_field :golf_course_name, placeholder: "例：〇〇ゴルフコース", class: "w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500" %>
+  </div>
+
+  <!-- プレー日（必須） -->
+  <div>
+    <div class="flex items-center gap-2 mb-1">
+      <%= f.label :played_on, "プレー日", class: "text-sm font-semibold text-gray-700" %>
+      <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">必須</span>
+    </div>
+    <%= f.date_field :played_on, class: "w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500" %>
+  </div>
+
+  <!-- 満足度（必須・5段階評価） -->
+  <div>
+    <div class="flex items-center gap-2 mb-1">
+      <%= f.label :satisfaction, "満足度（星1〜5）", class: "text-sm font-semibold text-gray-700" %>
+      <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">必須</span>
+    </div>
+    <div class="flex gap-4 items-center mt-2">
+      <% Record.satisfactions.keys.each do |key| %>
+        <label class="flex items-center gap-1 cursor-pointer hover:opacity-80">
+          <%= f.radio_button :satisfaction, key %>
+          <span class="text-sm font-medium"><%= key.sub("star", "⭐️") %></span>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- スコア入力（任意） -->
+  <div>
+    <div class="flex items-center gap-2 mb-1">
+      <span class="text-sm font-semibold text-gray-700">スコア</span>
+      <span class="bg-gray-200 text-gray-600 text-xs px-2 py-0.5 rounded-full font-bold">任意</span>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <%= f.label :score_18h, "18H スコア", class: "block text-xs text-gray-500 mb-1" %>
+        <%= f.number_field :score_18h, placeholder: "例：105", class: "w-full p-2 border border-gray-300 rounded" %>
+      </div>
+      <div>
+        <%= f.label :score_9h, "9H スコア", class: "block text-xs text-gray-500 mb-1" %>
+        <%= f.number_field :score_9h, placeholder: "例：52", class: "w-full p-2 border border-gray-300 rounded" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- メモ（任意） -->
+  <div>
+    <div class="flex items-center gap-2 mb-1">
+      <%= f.label :memo, "本音メモ・振り返り", class: "text-sm font-semibold text-gray-700" %>
+      <span class="bg-gray-200 text-gray-600 text-xs px-2 py-0.5 rounded-full font-bold">任意</span>
+    </div>
+    <%= f.text_area :memo, rows: 4, placeholder: "食事、難易度、設備の印象など自由に入力", class: "w-full p-2 border border-gray-300 rounded" %>
+  </div>
+
+  <!-- 送信ボタン（ボタンの文字を外から自由に変えられるように button_text にします） -->
+  <div class="text-center pt-4">
+    <%= f.submit button_text, class: "w-full bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-4 rounded-lg cursor-pointer transition shadow" %>
+  </div>
+<% end %>
