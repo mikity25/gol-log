@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   root "static_pages#top"
 
   # カルテの一覧・作成画面・保存処理の道を開通
-  resources :records, only: [ :index, :new, :create, :show, :edit, :update ]
+  resources :records, only: [ :index, :new, :create, :show, :edit, :update, :destroy ]
 
   # ヘルスチェック用（Rails8標準設定）
   get "up" => "rails/health#show", as: :rails_health_check

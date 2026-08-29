@@ -88,12 +88,15 @@
         </div>
       </div>
 
-      <!-- 「編集する」ボタン -->
-      <div class="border-t border-slate-100 pt-5 flex items-center justify-between">
+      <!-- アクションボタン枠（「編集する」＋「削除する」ボタン） -->
+<div class="border-t border-slate-100 pt-5 flex items-center justify-between">
         <%= link_to "← 一覧へ戻る", records_path, class: "px-4 py-2 text-sm text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition" %>
         <div class="flex items-center gap-3">
           <!-- 編集ボタン -->
           <%= link_to "✏️ 編集する", edit_record_path(@record), class: "px-4 py-2 text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg shadow transition" %>
+          <%= link_to "🗑️ 削除する", record_path(@record),
+                      data: { turbo_method: :delete, turbo_confirm: "本当にこのカルテを削除しますか？" },
+                      class: "px-4 py-2 text-sm font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded-lg border border-red-200 transition cursor-pointer" %>
         </div>
       </div>
     </div>
