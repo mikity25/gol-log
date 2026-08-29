@@ -17,13 +17,18 @@ class RecordsController < ApplicationController
     @record = current_user.records.find(params[:id])
   end
 
+  def edit
+    # 直したいカルテを自分のデータの中から1冊取り出して画面に渡す
+    @record = current_user.records.find(params[:id])
+  end
+
   def create
     # ログイン中のユーザーに紐付いた新しいカルテを作成する
     @record = current_user.records.build(record_params)
 
     if @record.save
       # 保存に成功した場合：カルテ一覧画面へ移動（メッセージ付き）
-      redirect_to records_path, notice: "ゴルフカルテを作成しました！⛳️"
+      redirect_to records_path, notice: "ゴルフカルテを作成しました⛳️"
     else
       # 保存に失敗した場合：エラー内容を持ったまま新規作成画面を再表示
       flash.now[:alert] = "カルテの作成に失敗しました。入力内容を確認してください。"
@@ -31,10 +36,24 @@ class RecordsController < ApplicationController
     end
   end
 
+  def update
+    # 直したいカルテを自分のデータの中から探す
+    @record = current_user.records.find(params[:id])
+
+    if @record.update(record_params)
+      # 更新に成功した場合：直したカルテの詳細画面へ移動
+      redirect_to record_path(@record), notice: "ゴルフカルテを更新しました⛳️"
+    else
+      # 更新に失敗した場合：入力内容を残したまま編集画面を再表示
+      flash.now[:alert] = "カルテの更新に失敗しました。入力内容を確認してください。"
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   private
 
-# 🔐 ストロングパラメーター（不正データ防止のセキュリティ機能）
-def record_params
+  # 🔐 ストロングパラメーター（不正データ防止のセキュリティ機能）
+  def record_params
     params.require(:record).permit(
       :golf_course_name,
       :played_on,

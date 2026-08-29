@@ -1,0 +1,11 @@
+<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md mt-8">
+  <div class="mb-4 flex justify-between items-center">
+    <%= link_to "← カルテ詳細に戻る", record_path(@record), class: "text-green-700 hover:underline text-sm font-semibold" %>
+    <%= link_to "一覧へ", records_path, class: "text-gray-500 hover:underline text-sm" %>
+  </div>
+
+  <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">✏️ ゴルフカルテ編集</h1>
+
+  <!-- 部品（_form）を呼び出す ボタンの文字だけ「更新する」に変更 -->
+  <%= render "form", record: @record, button_text: "カルテを更新する" %>
+</div>
