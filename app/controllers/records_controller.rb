@@ -27,27 +27,29 @@ class RecordsController < ApplicationController
     @record = current_user.records.build(record_params)
 
     if @record.save
-      # 保存に成功した場合：カルテ一覧画面へ移動（メッセージ付き）
-      redirect_to records_path, notice: "ゴルフカルテを作成しました⛳️"
+      redirect_to records_path, notice: "ゴルフカルテを作成しました！⛳️"
     else
-      # 保存に失敗した場合：エラー内容を持ったまま新規作成画面を再表示
       flash.now[:alert] = "カルテの作成に失敗しました。入力内容を確認してください。"
       render :new, status: :unprocessable_entity
     end
   end
 
   def update
-    # 直したいカルテを自分のデータの中から探す
     @record = current_user.records.find(params[:id])
 
     if @record.update(record_params)
-      # 更新に成功した場合：直したカルテの詳細画面へ移動
-      redirect_to record_path(@record), notice: "ゴルフカルテを更新しました⛳️"
+      redirect_to record_path(@record), notice: "ゴルフカルテを更新しました！⛳️"
     else
-      # 更新に失敗した場合：入力内容を残したまま編集画面を再表示
       flash.now[:alert] = "カルテの更新に失敗しました。入力内容を確認してください。"
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    # 他人のカルテを削除できないよう自分のデータの中から探す（セキュリティ超重要）
+    @record = current_user.records.find(params[:id])
+    @record.destroy
+    redirect_to records_path, notice: "ゴルフカルテを削除しました🗑️", status: :see_other
   end
 
   private
