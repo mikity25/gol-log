@@ -2,8 +2,8 @@
 require 'simplecov'
 SimpleCov.start 'rails' do
   # 測定対象から外すフォルダ
-  add_filter '/spec/'
-  add_filter '/config/'
+  skip '/spec/'
+  skip '/config/'
 end
 
 require 'spec_helper'
