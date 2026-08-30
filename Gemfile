@@ -60,6 +60,9 @@ group :development, :test do
   # 自動テスト用ツール（RSpec / FactoryBot）
   gem "rspec-rails"
   gem "factory_bot_rails"
+
+  # N+1問題を検知・警告するツール
+  gem "bullet"
 end
 
 # 開発環境でのみ使用するGem
