@@ -16,7 +16,7 @@ jobs:
     steps:
       # ソースコードの取得
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Ruby環境のセットアップ（Gemキャッシュ有効）
       - name: Set up Ruby
@@ -42,7 +42,7 @@ jobs:
     steps:
       # ソースコードの取得
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Ruby環境のセットアップ（Gemキャッシュ有効）
       - name: Set up Ruby
@@ -89,7 +89,7 @@ jobs:
 
       # ソースコードの取得
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Ruby環境のセットアップ
       - name: Set up Ruby
