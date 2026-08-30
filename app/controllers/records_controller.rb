@@ -1,19 +1,26 @@
 class RecordsController < ApplicationController
+  # 未ログインユーザーをログイン画面へリダイレクト
   before_action :authenticate_user!
+  # 指定アクションの実行前に対象のカルテを取得して @record にセット
   before_action :set_record, only: %i[show edit update destroy]
 
+  # カルテ一覧表示（プレー日の降順で取得）
   def index
     @records = current_user.records.order(played_on: :desc)
   end
 
+  # カルテ詳細表示（set_record で取得した @record を表示）
   def show; end
 
+  # カルテ新規作成フォーム表示
   def new
     @record = Record.new
   end
 
+  # カルテ編集フォーム表示（set_record で取得した @record を表示）
   def edit; end
 
+  # カルテ新規登録処理
   def create
     @record = current_user.records.build(record_params)
 
@@ -25,6 +32,7 @@ class RecordsController < ApplicationController
     end
   end
 
+  # カルテ更新処理
   def update
     if @record.update(record_params)
       redirect_to record_path(@record), notice: "ゴルフカルテを更新しました🆕"
@@ -34,6 +42,7 @@ class RecordsController < ApplicationController
     end
   end
 
+  # カルテ削除処理
   def destroy
     @record.destroy
     redirect_to records_path, notice: "ゴルフカルテを削除しました🗑️", status: :see_other
@@ -41,10 +50,12 @@ class RecordsController < ApplicationController
 
   private
 
+  # 他ユーザーのカルテへの不正アクセスを防ぐため current_user 経由で取得
   def set_record
     @record = current_user.records.find(params[:id])
   end
 
+  # 許可されたパラメータのみを受け取るストロングパラメータ
   def record_params
     params.require(:record).permit(
       :golf_course_name,
