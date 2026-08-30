@@ -1,3 +1,11 @@
+# SimpleCov（必ず一番上に置くこと）
+require 'simplecov'
+SimpleCov.start 'rails' do
+  # 測定対象から外すフォルダ
+  skip '/spec/'
+  skip '/config/'
+end
+
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
