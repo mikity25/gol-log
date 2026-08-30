@@ -1,42 +1,56 @@
 name: CI
 
+# トリガー: プルリクエスト作成時および main ブランチへのプッシュ時
 on:
   pull_request:
   push:
     branches: [ main ]
 
 jobs:
+  # ----------------------------------------------------
+  # 1. セキュリティ診断ジョブ
+  # ----------------------------------------------------
   scan_ruby:
     runs-on: ubuntu-latest
 
     steps:
+      # ソースコードの取得
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
+      # Ruby環境のセットアップ（Gemキャッシュ有効）
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
 
+      # Railsコードのセキュリティ脆弱性診断（Brakeman）
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
       
+      # 使用Gemの既知の脆弱性診断（bundler-audit）
       - name: Scan for known security vulnerabilities in gems used
         run: bin/bundler-audit
       
+  # ----------------------------------------------------
+  # 2. 静的コード解析ジョブ（RuboCop）
+  # ----------------------------------------------------
   lint:
     runs-on: ubuntu-latest
     env:
       RUBOCOP_CACHE_ROOT: tmp/rubocop
     steps:
+      # ソースコードの取得
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
+      # Ruby環境のセットアップ（Gemキャッシュ有効）
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
 
+      # 実行速度向上のための RuboCop キャッシュ設定
       - name: Prepare RuboCop cache
         uses: actions/cache@v4
         env:
@@ -47,12 +61,17 @@ jobs:
           restore-keys: |
             rubocop-${{ runner.os }}-${{ env.DEPENDENCIES_HASH }}-
 
+      # コードスタイルのチェック実行
       - name: Lint code for consistent style
         run: bin/rubocop -f github
 
+  # ----------------------------------------------------
+  # 3. 自動テスト実行ジョブ（RSpec）
+  # ----------------------------------------------------
   rspec:
     runs-on: ubuntu-latest
 
+    # テスト用 PostgreSQL コンテナの起動
     services:
       postgres:
         image: postgres
@@ -64,29 +83,35 @@ jobs:
         options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
+      # 必要なLinuxパッケージ（画像処理・DB接続用）のインストール
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y libpq-dev libvips node-gyp
 
+      # ソースコードの取得
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
+      # Ruby環境のセットアップ
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
 
+      # Node.js環境のセットアップ（Tailwind CSS / JSビルド用）
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'yarn'
 
+      # JavaScript依存関係のインストールおよびアセットビルド
       - name: Install JS dependencies & Build assets
         run: |
           yarn install --frozen-lockfile
           yarn build
           yarn build:css
 
+      # テストデータベースの準備と RSpec テストの実行
       - name: Run RSpec
         env:
           RAILS_ENV: test
