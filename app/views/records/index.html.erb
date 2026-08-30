@@ -1,63 +1,145 @@
-<div class="max-w-4xl mx-auto p-6 mt-8">
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold text-gray-800">⛳️ ゴルフカルテ一覧</h1>
-    <%= link_to "＋ 新しいカルテを書く", new_record_path, class: "bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded-lg shadow transition" %>
+<div class="max-w-4xl mx-auto py-8 px-4">
+  <!-- ヘッダーエリア -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight">ゴルフカルテ一覧</h1>
+      <p class="text-xs sm:text-sm text-slate-500 mt-1">
+        これまでのラウンド・コースカルテの記録一覧です
+      </p>
+    </div>
+    <div>
+      <%= link_to "＋ 新しいカルテを書く", new_record_path, class: "inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 px-5 rounded-xl shadow-md transition text-sm cursor-pointer" %>
+    </div>
   </div>
 
+  <!-- カルテ一覧リスト -->
   <% if @records.present? %>
     <div class="grid gap-4">
       <% @records.each do |record| %>
-        <div class="bg-white p-5 rounded-lg shadow border border-gray-200">
-          <div class="flex justify-between items-start">
-            <div>
-              <span class="text-xs text-gray-500 font-semibold"><%= record.played_on.strftime("%Y年%m月%d日") rescue record.played_on %></span>
-              <h2 class="text-xl font-bold text-gray-800 mt-1 hover:text-green-700 transition">
-                <%= link_to record.golf_course_name, record_path(record) %>
-              </h2>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 hover:border-emerald-500 transition duration-150 p-5">
+          <!-- 上段: 日付 ＆ 平日・休日バッジ ＆ 同伴者 ＆ ティー ＆ 満足度 -->
+          <div class="flex items-center justify-between gap-2 flex-wrap mb-2.5">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-xs text-slate-600 font-semibold">
+                <%= record.played_on.strftime("%Y/%m/%d") %>
+              </span>
+
+              <!-- 休日（薄い赤/ピンク） / 平日（薄いブルー） -->
+              <% if record.played_on.saturday? || record.played_on.sunday? %>
+                <span class="bg-rose-100 text-rose-800 border border-rose-200 text-xs font-bold px-2.5 py-0.5 rounded-full">
+                  休日 ㊗️
+                </span>
+              <% else %>
+                <span class="bg-sky-100 text-sky-800 border border-sky-200 text-xs font-bold px-2.5 py-0.5 rounded-full">
+                  平日 🔘
+                </span>
+              <% end %>
+
+              <!-- 同伴者バッジ -->
+              <% if record.companion.present? %>
+                <span class="bg-slate-100 text-slate-700 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-slate-200">
+                  同伴者： <%= record.companion %>
+                </span>
+              <% end %>
+
+              <!-- ティー（色別専用バッジ ＆ アイコン） -->
+              <% if record.tee.present? %>
+                <%
+                  tee_config = case record.tee
+                    when "レディース", /赤/ then { class: "bg-rose-500 text-white", icon: "🔴" }
+                    when "ショート", /ピンク/ then { class: "bg-pink-400 text-white", icon: "🌸" }
+                    when "フロント", /ゴールド/, /緑/ then { class: "bg-amber-400 text-slate-900 font-bold", icon: "🟡" }
+                    when "レギュラー", /白/ then { class: "bg-white text-slate-800 font-bold border border-slate-300", icon: "⚪️" }
+                    when "バック", /青/, /黒/ then { class: "bg-slate-900 text-white", icon: "🔵" }
+                    else { class: "bg-emerald-800 text-white", icon: "⛳️" }
+                  end
+                %>
+                <span class="<%= tee_config[:class] %> text-xs font-semibold px-2.5 py-0.5 rounded-full shadow-xs inline-flex items-center gap-1">
+                  <span><%= record.tee %></span>
+                  <span><%= tee_config[:icon] %></span>
+                </span>
+              <% end %>
+
+              <!-- ブランド -->
+              <% if record.brand.present? %>
+                <span class="bg-slate-100 text-slate-600 text-xs font-medium px-2 py-0.5 rounded-full">
+                  <%= record.brand %>
+                </span>
+              <% end %>
             </div>
-            <span class="text-yellow-500 font-bold text-lg"><%= record.satisfaction.sub("star", "⭐️ ") %></span>
+
+            <!-- 満足度（少し大きめ＆目立つデザイン） -->
+            <%
+              satisfaction_labels = {
+                "star1" => "不満",
+                "star2" => "やや不満",
+                "star3" => "普通",
+                "star4" => "満足",
+                "star5" => "大満足"
+              }
+              satisfaction_text = satisfaction_labels[record.satisfaction] || record.satisfaction
+            %>
+            <div class="flex items-center gap-1.5 text-sm">
+              <span class="text-amber-500 font-bold text-base"><%= "⭐️" * record.satisfaction_before_type_cast.to_i %></span>
+              <span class="text-slate-700 font-bold bg-amber-100 border border-amber-200 px-2 py-0.5 rounded-full text-xs">
+                <%= satisfaction_text %>
+              </span>
+            </div>
           </div>
 
-          <!-- スコア表示エリア（ハーフ・換算対応） -->
-          <div class="flex items-center gap-3 mt-3 text-sm text-gray-600 flex-wrap">
-            <% if record.score_18h.present? %>
-              <div class="flex items-center gap-1.5">
-                <span class="text-xs text-gray-500">スコア:</span>
-                <span class="font-bold text-gray-900 text-base"><%= record.score_18h %></span>
-                <span class="text-xs bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-medium">18H</span>
-              </div>
-            <% elsif record.score_9h.present? %>
-              <div class="flex items-center gap-2 flex-wrap">
-                <div class="flex items-center gap-1">
-                  <span class="text-xs text-gray-500">スコア:</span>
-                  <span class="font-bold text-gray-900 text-base"><%= record.score_9h %></span>
-                  <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-semibold">9Hハーフ</span>
-                </div>
-                <span class="text-xs text-gray-500 bg-gray-50 px-2 py-0.5 rounded border border-gray-100">
-                  18H換算目安スコア: <strong class="text-gray-700 font-bold"><%= record.converted_score_18h %></strong>
-                </span>
-              </div>
+          <!-- 中段: ゴルフ場名 -->
+          <div class="mb-3">
+            <%= link_to record_path(record), class: "hover:underline text-slate-800" do %>
+              <h2 class="text-lg sm:text-xl font-bold tracking-tight">
+                <%= record.golf_course_name %>
+              </h2>
             <% end %>
           </div>
 
-          <!-- 本音メモ（短縮表示） -->
-          <% if record.memo.present? %>
-            <p class="text-sm text-gray-700 mt-3 bg-gray-50 p-3 rounded border border-gray-100 line-clamp-2">
-              <%= record.memo %>
-            </p>
-          <% end %>
+          <!-- 下段: スコア ＆ 料金 ＆ 詳細リンク -->
+          <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-600 flex-wrap gap-2">
+            <div class="flex items-center gap-4">
+              <!-- スコア -->
+              <% if record.score_18h.present? %>
+                <div>
+                  <span class="text-slate-500 text-xs">18Hスコア：</span>
+                  <span class="font-extrabold text-slate-800 text-base sm:text-lg"><%= record.score_18h %></span>
+                </div>
+              <% elsif record.score_9h.present? %>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-slate-500 text-xs">9Hスコア：</span>
+                  <span class="font-bold text-slate-800"><%= record.score_9h %></span>
+                  <span class="text-xs text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-semibold">
+                    18H換算： <%= record.converted_score_18h %>
+                  </span>
+                </div>
+              <% else %>
+                <span class="text-slate-400 italic text-xs">スコア未入力</span>
+              <% end %>
 
-          <!-- 右下リンク -->
-          <div class="mt-4 pt-3 border-t border-gray-100 flex justify-end">
-            <%= link_to "詳細を見る →", record_path(record), class: "text-sm font-semibold text-green-700 hover:text-green-900 transition" %>
+              <!-- 料金（料金: 〇〇円） -->
+              <% if record.total_cost.present? %>
+                <div>
+                  <span class="font-semibold text-slate-700 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded text-xs">
+                    料金： <%= number_to_currency(record.total_cost, unit: "円", precision: 0, format: "%n%u") %>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+
+            <!-- 詳細リンク -->
+            <div class="flex items-center gap-3">
+              <%= link_to "詳細を見る →", record_path(record), class: "text-emerald-700 hover:text-emerald-900 font-bold transition" %>
+            </div>
           </div>
         </div>
       <% end %>
     </div>
   <% else %>
-    <div class="text-center py-12 bg-white rounded-lg shadow border border-gray-100">
-      <p class="text-gray-500 mb-4">まだカルテが登録されていません🏌️‍♀️</p>
-      <%= link_to "最初のカルテを登録してみる", new_record_path, class: "text-green-700 font-bold hover:underline" %>
+    <!-- カルテが0件のとき -->
+    <div class="text-center py-16 bg-white rounded-3xl shadow-sm border border-slate-100 p-6">
+      <p class="text-slate-400 mb-4 text-base">まだ登録されたゴルフカルテがありません</p>
+      <%= link_to "最初のカルテを登録してみる", new_record_path, class: "inline-block bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 px-6 rounded-xl transition shadow" %>
     </div>
   <% end %>
 </div>

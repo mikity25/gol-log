@@ -1,30 +1,36 @@
 class Record < ApplicationRecord
   belongs_to :user
 
+  # 配列カラムを自動でシリアライズ（配列として扱う）
+  serialize :green_features, type: Array, coder: YAML
+  serialize :driving_range, type: Array, coder: YAML
+  serialize :bath_features, type: Array, coder: YAML
+  serialize :plan_options, type: Array, coder: YAML
+
   enum :satisfaction, { star1: 1, star2: 2, star3: 3, star4: 4, star5: 5 }
 
-  # バリデーション
+  # 必須バリデーション
   validates :golf_course_name, presence: true
   validates :played_on, presence: true
   validates :satisfaction, presence: true
 
-  # 同一ユーザーによる同日・同ゴルフ場の二重登録を防止
+  # 同一ユーザーの同日・同ゴルフ場重複防止
   validates :golf_course_name, uniqueness: {
     scope: [:user_id, :played_on],
     message: "は同じ日にすでに登録されています"
   }
 
-  # 料金は0以上の半角整数のみ許可（任意入力）
+  # 料金は0以上の半角整数のみ（任意）
   validates :total_cost, numericality: {
     only_integer: true,
     greater_than_or_equal_to: 0,
     allow_nil: true
   }
 
-  # スコアは18Hまたは9Hのどちらか一方のみ許可
+  # スコア排他チェック
   validate :either_score_18h_or_score_9h
 
-  # コールバック：保存直前に18H換算スコアを自動算出
+  # 18H換算自動計算
   before_save :calculate_converted_score_18h
 
   private
