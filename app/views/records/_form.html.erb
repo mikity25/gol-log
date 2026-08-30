@@ -1,8 +1,11 @@
-<%= form_with model: record, class: "space-y-6" do |f| %>
+<%= form_with model: record, class: "space-y-8" do |f| %>
   <!-- エラーメッセージ表示エリア -->
   <% if record.errors.any? %>
-    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
-      <ul class="list-disc list-inside text-sm text-red-700">
+    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-xl shadow-sm">
+      <div class="flex items-center gap-2 text-red-800 font-bold mb-1 text-sm">
+        <span>⚠️ 入力内容を確認してください</span>
+      </div>
+      <ul class="list-disc list-inside text-xs text-red-700 space-y-1">
         <% record.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
@@ -10,91 +13,318 @@
     </div>
   <% end %>
 
-  <!-- ゴルフ場名（必須） -->
-  <div>
-    <div class="flex items-center gap-2 mb-1">
-      <%= f.label :golf_course_name, "ゴルフ場名", class: "text-sm font-semibold text-gray-700" %>
-      <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">必須</span>
-    </div>
-    <%= f.text_field :golf_course_name, placeholder: "例：〇〇ゴルフコース", class: "w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500" %>
+  <!-- 誘導メッセージバナー -->
+  <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-emerald-900 text-sm">
+    <p class="font-bold flex items-center gap-1">
+      💡 基本情報（ゴルフ場・日付・満足度）の3項目のみ必須
+    </p>
+    <p class="text-xs text-emerald-700 mt-1 leading-relaxed">
+      その他の項目は気になるポイントだけ自由に記録できます。<br class="hidden sm:inline">
+      詳細に入力するほど、後から見返したときに精度の高いオリジナルカルテになります✨
+    </p>
   </div>
 
-  <!-- プレー日（必須） -->
-  <div>
-    <div class="flex items-center gap-2 mb-1">
-      <%= f.label :played_on, "プレー日", class: "text-sm font-semibold text-gray-700" %>
-      <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">必須</span>
-    </div>
-    <%= f.date_field :played_on, class: "w-full p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500" %>
-  </div>
+  <!-- ==================== セクション 1: 基本情報（必須） ==================== -->
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+    <h3 class="text-base font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
+      📌 基本情報 <span class="text-xs bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded-full">必須</span>
+    </h3>
 
-  <!-- 満足度（必須・5段階評価） -->
-  <div>
-    <div class="flex items-center gap-2 mb-1">
-      <%= f.label :satisfaction, "満足度（星1〜5）", class: "text-sm font-semibold text-gray-700" %>
-      <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">必須</span>
+    <!-- ゴルフ場名（過去の入力候補 datalist 付き） -->
+    <div>
+      <%= f.label :golf_course_name, "ゴルフ場名", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+      <%= f.text_field :golf_course_name, list: "golf-course-list", placeholder: "例：〇〇ゴルフコース", class: "w-full p-2.5 border border-slate-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 text-sm" %>
+      <datalist id="golf-course-list">
+        <% current_user.records.pluck(:golf_course_name).uniq.compact.each do |course_name| %>
+          <option value="<%= course_name %>"></option>
+        <% end %>
+      </datalist>
     </div>
-    <div class="flex gap-4 items-center mt-2">
-      <% Record.satisfactions.keys.each do |key| %>
-        <label class="flex items-center gap-1 cursor-pointer hover:opacity-80">
-          <%= f.radio_button :satisfaction, key %>
-          <span class="text-sm font-medium"><%= key.sub("star", "⭐️") %></span>
-        </label>
-      <% end %>
-    </div>
-  </div>
 
-  <!-- スコア入力（任意） -->
-  <div>
-    <div class="flex items-center gap-2 mb-1">
-      <span class="text-sm font-semibold text-gray-700">スコア</span>
-      <span class="bg-gray-200 text-gray-600 text-xs px-2 py-0.5 rounded-full font-bold">任意</span>
+    <!-- プレー日 -->
+    <div>
+      <%= f.label :played_on, "プレー日", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+      <%= f.date_field :played_on, value: (record.played_on || Date.today), class: "w-full p-2.5 border border-slate-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 text-sm" %>
     </div>
-    <div class="grid grid-cols-2 gap-4">
-      <div>
-        <%= f.label :score_18h, "18H スコア", class: "block text-xs text-gray-500 mb-1" %>
-        <%= f.number_field :score_18h, placeholder: "例：105", class: "w-full p-2 border border-gray-300 rounded" %>
+
+    <!-- 総合満足度（5段階スケールボタン） -->
+    <div>
+      <div class="flex justify-between items-center mb-1">
+        <%= f.label :satisfaction, "総合満足度", class: "block text-sm font-semibold text-slate-700" %>
+        <span class="text-xs text-slate-400">1 (不満) ➔ 5 (大満足)</span>
       </div>
-      <div>
-        <%= f.label :score_9h, "9H スコア", class: "block text-xs text-gray-500 mb-1" %>
-        <%= f.number_field :score_9h, placeholder: "例：52", class: "w-full p-2 border border-gray-300 rounded" %>
+
+      <div class="grid grid-cols-5 gap-2 mt-2">
+        <% [
+          ["star1", "1", "不満"],
+          ["star2", "2", "やや不満"],
+          ["star3", "3", "普通"],
+          ["star4", "4", "満足"],
+          ["star5", "5", "大満足"]
+        ].each do |key, num, label_text| %>
+          <label class="cursor-pointer">
+            <%= f.radio_button :satisfaction, key, class: "peer sr-only" %>
+            <div class="p-2.5 sm:p-3 text-center rounded-xl border border-slate-200 bg-slate-50 transition-all duration-150
+                        peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:border-emerald-600 peer-checked:shadow-md
+                        hover:bg-slate-100 peer-hover:border-slate-300">
+              <span class="block text-base sm:text-lg font-bold">⭐️ <%= num %></span>
+              <span class="block text-[10px] sm:text-xs mt-0.5 opacity-90"><%= label_text %></span>
+            </div>
+          </label>
+        <% end %>
       </div>
     </div>
   </div>
 
-  <!-- コースの印象・評価（任意） -->
-  <div class="border-t border-gray-100 pt-5">
-    <div class="flex items-center gap-2 mb-3">
-      <span class="text-sm font-semibold text-gray-700">🏌️ コースの印象・評価</span>
-      <span class="bg-gray-200 text-gray-600 text-xs px-2 py-0.5 rounded-full font-bold">任意</span>
-    </div>
+  <!-- ==================== セクション 2: 料金プラン ＆ 食事（重要度：高） ==================== -->
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+    <h3 class="text-base font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
+      💰 料金プラン ＆ 食事 <span class="text-xs bg-slate-100 text-slate-600 font-semibold px-2 py-0.5 rounded-full">任意</span>
+    </h3>
+
+    <!-- 料金 ＆ メモ -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
       <div>
-        <%= f.label :difficulty, "コース難易度", class: "block text-xs text-gray-600 mb-1" %>
-        <%= f.text_field :difficulty, placeholder: "例：フラット、池多め", class: "w-full p-2 text-sm border border-gray-300 rounded" %>
+        <%= f.label :total_cost, "総額料金（円）", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.number_field :total_cost, placeholder: "例：11500", class: "w-full p-2 border border-slate-300 rounded-lg text-sm" %>
       </div>
-      <div>
-        <%= f.label :food, "レストラン/食事", class: "block text-xs text-gray-600 mb-1" %>
-        <%= f.text_field :food, placeholder: "例：蕎麦が美味しい", class: "w-full p-2 text-sm border border-gray-300 rounded" %>
+      <div class="sm:col-span-2">
+        <%= f.label :cost_memo, "プランメモ", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.text_field :cost_memo, placeholder: "例：割引券使用、2サム割増なし", class: "w-full p-2 border border-slate-300 rounded-lg text-sm" %>
       </div>
+    </div>
+
+    <!-- プランオプション（複数チェック） -->
+    <div class="border-t border-slate-100 pt-3">
+      <span class="block text-xs font-semibold text-slate-700 mb-2">🏷️ プラン・オプション（複数選択可）</span>
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+        <% [
+          ["昼食付", "昼食付"],
+          ["キャディ付", "キャディ付"],
+          ["クールカート", "クールカート"],
+          ["乗り入れ可", "乗り入れ可"],
+          ["手引き/歩き", "手引き・歩き"]
+        ].each do |label_text, value| %>
+          <label class="flex items-center gap-1.5 text-xs text-slate-700 cursor-pointer">
+            <%= f.check_box :plan_options, { multiple: true }, value, nil %>
+            <span><%= label_text %></span>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- 食事評価 ＆ メニューメモ -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 border-t border-slate-100 pt-3">
       <div>
-        <%= f.label :facility, "設備・クラブハウス", class: "block text-xs text-gray-600 mb-1" %>
-        <%= f.text_field :facility, placeholder: "例：温泉あり、綺麗", class: "w-full p-2 text-sm border border-gray-300 rounded" %>
+        <%= f.label :food_rating, "レストラン評価", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :food_rating, ["とても美味しい 😍", "美味しい 😋", "普通 😀", "イマイチ 😮"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+      <div class="sm:col-span-2">
+        <%= f.label :food_memo, "食事メモ・食べたメニュー", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.text_field :food_memo, placeholder: "例：名物のカレーが絶品！パスタも美味しそうだった", class: "w-full p-2 border border-slate-300 rounded-lg text-sm" %>
       </div>
     </div>
   </div>
 
-  <!-- 本音メモ（任意） -->
-  <div class="border-t border-gray-100 pt-5">
-    <div class="flex items-center gap-2 mb-1">
-      <%= f.label :memo, "本音メモ・振り返り", class: "text-sm font-semibold text-gray-700" %>
-      <span class="bg-gray-200 text-gray-600 text-xs px-2 py-0.5 rounded-full font-bold">任意</span>
+  <!-- ==================== セクション 3: ラウンド環境 ＆ スコア ==================== -->
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+    <h3 class="text-base font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
+      ⛳️ ラウンド環境 ＆ スコア <span class="text-xs bg-slate-100 text-slate-600 font-semibold px-2 py-0.5 rounded-full">任意</span>
+    </h3>
+
+    <!-- スコア入力（18H または 9H） -->
+    <div>
+      <span class="block text-xs font-semibold text-slate-700 mb-1">総スコア ※どちらか一方を入力</span>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <%= f.label :score_18h, "18H スコア", class: "block text-xs text-slate-500 mb-1" %>
+          <%= f.number_field :score_18h, placeholder: "例：135", class: "w-full p-2 border border-slate-300 rounded-lg text-sm" %>
+        </div>
+        <div>
+          <%= f.label :score_9h, "9H スコア（ハーフ）", class: "block text-xs text-slate-500 mb-1" %>
+          <%= f.number_field :score_9h, placeholder: "例：65", class: "w-full p-2 border border-slate-300 rounded-lg text-sm" %>
+        </div>
+      </div>
     </div>
-    <%= f.text_area :memo, rows: 4, placeholder: "コースのコンディション、同行者との思い出、次回気をつけたいポイントなど自由に入力", class: "w-full p-2 border border-gray-300 rounded" %>
+
+    <!-- 同伴者（専用カラム companion） -->
+    <div>
+      <%= f.label :companion, "同伴者（関係性・名前など）", class: "block text-xs text-slate-600 mb-1" %>
+      <%= f.text_field :companion, placeholder: "例：山田太郎、友人、コンペ、一人予約 など", class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm" %>
+    </div>
+
+    <!-- 使用ティー ＆ 天気 ＆ 進行 ＆ プレースタイル ＆ 系列ブランド -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div>
+        <%= f.label :tee, "使用ティー", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :tee, [
+          ["🌸 ピンク（前・ショート）", "ショート"],
+          ["🔴 赤（レディース）", "レディース"],
+          ["🟡 ゴールド / 緑（フロント）", "フロント"],
+          ["⚪️ 白（レギュラー）", "レギュラー"],
+          ["🔵 青 / 黒（バック）", "バック"]
+        ], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+      <div>
+        <%= f.label :weather, "天気", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :weather, ["晴れ ☀️", "くもり ☁️", "雨 ☔️", "強風 💨", "霧 🌫️", "雷 ⚡️", "雪 ❄️"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+      <div>
+        <%= f.label :pace, "進行状況", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :pace, ["スムーズ・空いていた 🟢", "普通 🟡", "詰め込み気味・待ち多め 🔴"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+      <div>
+        <%= f.label :play_style, "プレースタイル", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :play_style, ["通常(ハーフ休憩あり)", "スループレー", "早朝スルー", "薄暮ハーフ", "コンペ", "レッスン・練習"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+      <div class="sm:col-span-2 lg:col-span-2">
+        <%= f.label :brand, "ゴルフ場系列・ブランド", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :brand, ["アコーディア", "PGM", "太平洋クラブ", "東急リゾート", "市営・パブリック", "その他・単体"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== セクション 4: コース特徴・難易度 ==================== -->
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+    <h3 class="text-base font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
+      🏌️ コースの特徴・難易度 <span class="text-xs bg-slate-100 text-slate-600 font-semibold px-2 py-0.5 rounded-full">任意</span>
+    </h3>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div>
+        <%= f.label :difficulty, "コース総合難易度", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :difficulty, ["易しい", "普通", "やや難しい", "難しい・戦略的"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+      <div>
+        <%= f.label :course_width, "コースの広さ", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :course_width, ["広い（フェアウェイ乗せやすい）", "やや広い", "普通", "やや狭い", "狭い（隣接・プレッシャーあり）"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+      <div>
+        <%= f.label :fairway, "フェアウェイ起伏", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :fairway, ["フラット(平坦)", "適度な起伏(普通)", "アンジュレーション強め", "アップダウン激しい(山岳)"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div>
+        <%= f.label :ob_risk, "OBの出やすさ", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :ob_risk, ["出にくい(安心)", "普通", "ワンペナ多め(OBではない)", "出やすい(狭い)"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+      <div>
+        <%= f.label :bunker_difficulty, "バンカーの難しさ", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :bunker_difficulty, ["少ない・浅い", "普通", "アゴが高い(脱出難)", "数が多い(砂地獄)", "気にならない"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+      <div>
+        <%= f.label :hazard, "池・谷・崖の多さ", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :hazard, ["ほぼなし", "適度にある", "池・谷越え多め(ボール無くなる)"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+    </div>
+
+    <!-- グリーン傾向 -->
+    <div class="border-t border-slate-100 pt-3">
+      <span class="block text-xs font-semibold text-slate-700 mb-2">🟢 グリーン傾向（複数選択可）</span>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+        <% [
+          ["砲台グリーン多め（乗せるのが難しい）", "砲台グリーン多め"],
+          ["傾斜・2段グリーン強め（パット難）", "傾斜・2段グリーン強め"],
+          ["グリーンスピード速い", "グリーン速い"],
+          ["グリーンスピード遅い", "グリーン遅い"],
+          ["広くて乗せやすい", "広くて乗りやすい"],
+          ["狭くて乗せにくい", "狭くて乗せにくい"]
+        ].each do |label_text, value| %>
+          <label class="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
+            <%= f.check_box :green_features, { multiple: true }, value, nil %>
+            <span><%= label_text %></span>
+          </label>
+        <% end %>
+      </div>
+      <%= f.text_field :green_memo, placeholder: "グリーン補足メモ（例：ベントグリーン、芝目の影響あり など）", class: "w-full p-2 border border-slate-300 rounded-lg text-xs" %>
+    </div>
+  </div>
+
+  <!-- ==================== セクション 5: 施設・設備 ==================== -->
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+    <h3 class="text-base font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
+      🏛️ 施設・設備 <span class="text-xs bg-slate-100 text-slate-600 font-semibold px-2 py-0.5 rounded-full">任意</span>
+    </h3>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div>
+        <%= f.label :toilet_rating, "コース内トイレ", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :toilet_rating, ["多い", "普通", "少ない"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+      <div>
+        <%= f.label :cart_type, "カート・移動方式", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :cart_type, ["リモコン電磁誘導", "自走カート", "フェアウェイ乗り入れ可", "手引き・歩き"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+      <div>
+        <%= f.label :maintenance, "コースメンテナンス", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :maintenance, ["素晴らしい ✨", "良い 👍", "普通", "荒れ気味 ⚠️"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+      <div>
+        <%= f.label :service, "スタッフ接客", class: "block text-xs text-slate-600 mb-1" %>
+        <%= f.select :service, ["丁寧で心地よい ✨", "良い 👍", "普通", "少し残念 ⚠️"], { include_blank: "選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+      </div>
+    </div>
+
+    <!-- 練習場設備 -->
+    <div class="border-t border-slate-100 pt-3">
+      <span class="block text-xs font-semibold text-slate-700 mb-2">🌅 練習場設備（複数選択可）</span>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <% [
+          ["ドライビングレンジ（打ちっぱなし）", "打ちっぱなし"],
+          ["アプローチ練習場", "アプローチ練習場"],
+          ["バンカー練習場", "バンカー練習場"],
+          ["パター練習のみ / なし", "パター練習のみ"]
+        ].each do |label_text, value| %>
+          <label class="flex items-center gap-1.5 text-xs text-slate-700 cursor-pointer">
+            <%= f.check_box :driving_range, { multiple: true }, value, nil %>
+            <span><%= label_text %></span>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- お風呂・アメニティ -->
+    <div class="border-t border-slate-100 pt-3">
+      <span class="block text-xs font-semibold text-slate-700 mb-2">♨️ お風呂・アメニティ（複数選択可）</span>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
+        <% [
+          ["温泉・露天風呂あり", "温泉あり"],
+          ["サウナ・水風呂あり", "サウナあり"],
+          ["高級ドライヤー(ReFa等)", "高級ドライヤー"],
+          ["アメニティ充実", "アメニティ充実"],
+          ["シャワーのみ", "シャワーのみ"],
+          ["お風呂なし", "お風呂なし"]
+        ].each do |label_text, value| %>
+          <label class="flex items-center gap-1.5 text-xs text-slate-700 cursor-pointer">
+            <%= f.check_box :bath_features, { multiple: true }, value, nil %>
+            <span><%= label_text %></span>
+          </label>
+        <% end %>
+      </div>
+      <%= f.text_field :bath_memo, placeholder: "お風呂補足メモ（例：シャンプーバーあり、パウダールームが広いなど）", class: "w-full p-2 border border-slate-300 rounded-lg text-xs" %>
+    </div>
+
+    <!-- 売店・茶屋・自販機メモ -->
+    <div class="border-t border-slate-100 pt-3">
+      <span class="block text-xs font-semibold text-slate-700 mb-2">🥤 売店・茶屋・自販機メモ</span>
+      <%= f.text_field :shop_memo, placeholder: "例：コース自販機は電子マネー対応、茶屋あり", class: "w-full p-2 border border-slate-300 rounded-lg text-xs" %>
+    </div>
+  </div>
+
+  <!-- ==================== セクション 6: その他 本音メモ・振り返り ==================== -->
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+    <h3 class="text-base font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
+      📝 その他 本音メモ・振り返り <span class="text-xs bg-slate-100 text-slate-600 font-semibold px-2 py-0.5 rounded-full">任意</span>
+    </h3>
+    <div>
+      <%= f.text_area :memo, rows: 4, placeholder: "次回気をつけたいポイント、コースの攻略法、反省点など自由に入力", class: "w-full p-2.5 border border-slate-300 rounded-lg text-sm leading-relaxed" %>
+    </div>
   </div>
 
   <!-- 送信ボタン -->
-  <div class="text-center pt-4">
-    <%= f.submit button_text, class: "w-full bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-4 rounded-lg cursor-pointer transition shadow" %>
+  <div class="text-center pt-2">
+    <%= f.submit button_text, class: "w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3.5 px-4 rounded-xl cursor-pointer transition shadow-md text-base" %>
   </div>
 <% end %>

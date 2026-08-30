@@ -10,22 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_27_045048) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_30_112542) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "records", force: :cascade do |t|
+    t.string "bath_features"
+    t.string "bath_memo"
+    t.string "brand"
+    t.string "bunker_difficulty"
+    t.string "cart_type"
+    t.string "companion"
     t.integer "converted_score_18h"
+    t.string "cost_memo"
+    t.string "course_width"
     t.datetime "created_at", null: false
     t.integer "difficulty"
+    t.string "driving_range"
     t.integer "facility"
+    t.string "fairway"
     t.integer "food"
+    t.text "food_memo"
+    t.string "food_rating"
     t.string "golf_course_name", null: false
+    t.string "green_features"
+    t.string "green_memo"
+    t.string "hazard"
+    t.string "maintenance"
     t.text "memo"
+    t.string "ob_risk"
+    t.string "pace"
+    t.string "plan_options"
+    t.string "play_style"
     t.date "played_on", null: false
     t.integer "satisfaction", null: false
     t.integer "score_18h"
     t.integer "score_9h"
+    t.string "service"
+    t.string "shop_memo"
+    t.string "tee"
+    t.string "toilet_rating"
+    t.integer "total_cost"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_records_on_user_id"
