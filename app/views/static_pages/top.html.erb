@@ -7,12 +7,16 @@
     自分視点の本音メモで、次のコース選びを最適化する<br>
     <strong>自分専用ゴルフ場カルテ</strong>
   </p>
-  
-  <!-- 仮のアクションボタン -->
-  <div style="margin-top: 20px;">
-    <a href="#" style="background-color: #2d6a4f; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;">
-      今すぐ始める（準備中）
-    </a>
+
+  <!-- ユーザーの状態に応じたアクションボタン -->
+  <div style="margin-top: 24px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+    <% if user_signed_in? %>
+      <%= link_to "📋 カルテ一覧を見る", records_path, style: "background-color: #2d6a4f; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" %>
+      <%= link_to "✏️ 新しいカルテを書く", new_record_path, style: "background-color: #ffffff; color: #2d6a4f; border: 2px solid #2d6a4f; padding: 10px 22px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;" %>
+    <% else %>
+      <%= link_to "🚀 無料ではじめる（登録）", new_user_registration_path, style: "background-color: #2d6a4f; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" %>
+      <%= link_to "🔑 ログイン", new_user_session_path, style: "background-color: #ffffff; color: #2d6a4f; border: 2px solid #2d6a4f; padding: 10px 22px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;" %>
+    <% end %>
   </div>
 </div>
 
@@ -42,7 +46,7 @@
     </div>
 
     <!-- 特徴 3 -->
-    <div style="flex: 1; min-width: 250px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+    <div style="flex: 1; min-width: 250px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05討);">
       <div style="font-size: 30px; margin-bottom: 10px;">📱</div>
       <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">自分専用カルテ</h3>
       <p style="font-size: 14px; color: #718096; line-height: 1.5;">
