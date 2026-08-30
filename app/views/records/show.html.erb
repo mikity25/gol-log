@@ -36,18 +36,42 @@
           </div>
         </div>
 
-        <!-- スコア -->
+        <!-- スコア（ハーフプレー特記対応版） -->
         <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-          <span class="text-xs text-slate-500 block mb-1">スコア</span>
-          <div class="text-slate-800 font-bold text-lg">
-            <% if @record.score_18h.present? %>
-              <%= @record.score_18h %> <span class="text-xs text-slate-500 font-normal">(18H)</span>
-            <% elsif @record.score_9h.present? %>
-              <%= @record.score_9h %> <span class="text-xs text-slate-500 font-normal">(9H)</span>
-            <% else %>
+          <span class="text-xs text-slate-500 block mb-1">スコア記録</span>
+          
+          <% if @record.score_18h.present? %>
+            <!-- 18H完走の場合 -->
+            <div class="flex items-baseline gap-2 mt-1">
+              <span class="text-slate-800 font-bold text-2xl"><%= @record.score_18h %></span>
+              <span class="text-xs font-semibold text-slate-600 bg-slate-200/70 px-2 py-0.5 rounded">18H ラウンド</span>
+            </div>
+
+          <% elsif @record.score_9h.present? %>
+            <!-- 9H（ハーフ）の場合 -->
+            <div>
+              <div class="flex items-center gap-2 flex-wrap mt-1">
+                <span class="text-slate-800 font-bold text-2xl"><%= @record.score_9h %></span>
+                <span class="text-xs font-semibold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">
+                  ⛳️ ハーフプレー (9H)
+                </span>
+              </div>
+              
+              <!-- 18H換算の特記事項（将来のソート・分析用） -->
+              <div class="mt-2 text-xs text-slate-600 bg-white p-2.5 rounded-lg border border-slate-200">
+                <span class="font-bold text-emerald-700">18H換算目安スコア: 約 <%= @record.converted_score_18h %></span>
+                <p class="text-slate-500 mt-0.5 leading-relaxed">
+                  ※ハーフ(9H)スコアを2倍にし、18ホール相当の想定スコアとして表示しています。
+                </p>
+              </div>
+            </div>
+
+          <% else %>
+            <!-- 未入力の場合 -->
+            <div class="mt-1">
               <span class="text-slate-400 text-sm font-normal">未入力</span>
-            <% end %>
-          </div>
+            </div>
+          <% end %>
         </div>
       </div>
 
@@ -89,11 +113,12 @@
       </div>
 
       <!-- アクションボタン枠（「編集する」＋「削除する」ボタン） -->
-<div class="border-t border-slate-100 pt-5 flex items-center justify-between">
+      <div class="border-t border-slate-100 pt-5 flex items-center justify-between">
         <%= link_to "← 一覧へ戻る", records_path, class: "px-4 py-2 text-sm text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition" %>
         <div class="flex items-center gap-3">
           <!-- 編集ボタン -->
           <%= link_to "✏️ 編集する", edit_record_path(@record), class: "px-4 py-2 text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg shadow transition" %>
+          <!-- 削除ボタン（カリキュラム準拠のlink_to形式） -->
           <%= link_to "🗑️ 削除する", record_path(@record),
                       data: { turbo_method: :delete, turbo_confirm: "本当にこのカルテを削除しますか？" },
                       class: "px-4 py-2 text-sm font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded-lg border border-red-200 transition cursor-pointer" %>
