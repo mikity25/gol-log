@@ -337,7 +337,7 @@ Figma：https://www.figma.com/design/WQKSmlXV0Wz9FabuJLlhFM/gol-log%E3%80%80%E7%
 
 ## 12. ER図
 
-[![Image from Gyazo](https://i.gyazo.com/a07a8f3aa6c63c10a1e88bb5a12bc05a.png)](https://gyazo.com/a07a8f3aa6c63c10a1e88bb5a12bc05a)
+[![Image from Gyazo](https://i.gyazo.com/62e5d6e2617415e824f9a335fb43079c.png)](https://gyazo.com/62e5d6e2617415e824f9a335fb43079c)
 
 ### テーブル詳細
 
@@ -358,15 +358,39 @@ Figma：https://www.figma.com/design/WQKSmlXV0Wz9FabuJLlhFM/gol-log%E3%80%80%E7%
 | --- | --- | --- | --- |
 | id | bigint | PRIMARY KEY | カルテID |
 | user_id | bigint | NOT NULL, FOREIGN KEY | 作成者のユーザーID |
-| golf_course_name | string | NOT NULL | ゴルフ場名 |
+| golf_course_name | string | NOT NULL | ゴルフ場名（同一ユーザー・同日重複不可） |
 | played_on | date | NOT NULL | プレー日 |
-| satisfaction | integer | NOT NULL | 満足度（enum: star1〜star5） |
-| difficulty | integer | - | 難易度（任意） |
-| food | integer | - | 食事の評価（任意） |
-| facility | integer | - | 設備の評価（任意） |
+| satisfaction | integer | NOT NULL | 総合満足度（Enum: star1〜star5） |
 | score_18h | integer | - | 18ホールのスコア（任意） |
 | score_9h | integer | - | 9ホールのスコア（任意） |
-| converted_score_18h| integer | - | 18ホール換算スコア（自動計算、任意） |
-| memo | text | - | 自由記述メモ（任意） |
+| converted_score_18h | integer | - | 18ホール換算スコア（自動計算、任意） |
+| companion | string | - | 同伴者（関係性・名前） |
+| tee | string | - | 使用ティー（レディース/白/青等） |
+| weather | string | - | 天気（晴れ/くもり/雨等） |
+| pace | string | - | 進行状況（スムーズ/混雑等） |
+| play_style | string | - | プレースタイル（通常/スルー等） |
+| brand | string | - | 系列・ブランド（アコーディア/PGM等） |
+| total_cost | integer | - | 総額料金（円） |
+| cost_memo | string | - | 料金・プランメモ |
+| plan_options | text | - | プラン・オプション（配列シリアライズ） |
+| food_rating | string | - | レストラン評価 |
+| food_memo | string | - | 食事メモ・メニュー |
+| difficulty | string | - | 総合難易度 |
+| course_width | string | - | コース広さ |
+| fairway | string | - | フェアウェイ起伏 |
+| ob_risk | string | - | OBの出やすさ |
+| bunker_difficulty | string | - | バンカー難易度 |
+| hazard | string | - | 池・谷・崖の多さ |
+| green_features | text | - | グリーン傾向（配列シリアライズ） |
+| green_memo | string | - | グリーン補足メモ |
+| toilet_rating | string | - | コース内トイレ評価 |
+| cart_type | string | - | カート移動方式（リモコン/乗り入れ等） |
+| maintenance | string | - | メンテナンス評価 |
+| service | string | - | 接客評価 |
+| driving_range | text | - | 練習場設備（配列シリアライズ） |
+| bath_features | text | - | お風呂設備（配列シリアライズ） |
+| bath_memo | string | - | お風呂メモ |
+| shop_memo | string | - | 売店・自販機メモ |
+| memo | text | - | 本音メモ・次回への振り返り |
 | created_at | datetime | NOT NULL | 作成日時 |
 | updated_at | datetime | NOT NULL | 更新日時 |

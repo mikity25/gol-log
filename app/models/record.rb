@@ -1,32 +1,47 @@
 class Record < ApplicationRecord
-  # ユーザーとの紐付け（必須）
   belongs_to :user
 
-  # 満足度のenum設定（星1〜星5）
+  # 配列カラムを自動でシリアライズ（配列として扱う）
+  serialize :green_features, type: Array, coder: YAML
+  serialize :driving_range, type: Array, coder: YAML
+  serialize :bath_features, type: Array, coder: YAML
+  serialize :plan_options, type: Array, coder: YAML
+
   enum :satisfaction, { star1: 1, star2: 2, star3: 3, star4: 4, star5: 5 }
 
-  # 必須項目のバリデーション（空欄チェック）
+  # 必須バリデーション
   validates :golf_course_name, presence: true
   validates :played_on, presence: true
   validates :satisfaction, presence: true
 
-  # 重複チェック（同じユーザーが、同じ日に、同じゴルフ場を二重登録するのを防ぐ）
+  # 同一ユーザーの同日・同ゴルフ場重複防止
   validates :golf_course_name, uniqueness: {
     scope: [ :user_id, :played_on ],
     message: "は同じ日にすでに登録されています"
   }
 
-  # 自動計算トリガー（保存の直前に計算機を動かす）
+  # 料金は0以上の半角整数のみ（任意）
+  validates :total_cost, numericality: {
+    only_integer: true,
+    greater_than_or_equal_to: 0,
+    allow_nil: true
+  }
+
+  # スコア排他チェック
+  validate :either_score_18h_or_score_9h
+
+  # 18H換算自動計算
   before_save :calculate_converted_score_18h
 
   private
 
-  # 9Hスコアを2倍して18H換算スコアにセットする計算機
+  def either_score_18h_or_score_9h
+    return unless score_18h.present? && score_9h.present?
+
+    errors.add(:base, "スコアは「18Hスコア」または「9Hスコア」のどちらか一方のみ入力してください")
+  end
+
   def calculate_converted_score_18h
-    if score_9h.present?
-      self.converted_score_18h = score_9h * 2
-    else
-      self.converted_score_18h = nil
-    end
+    self.converted_score_18h = score_9h.present? ? score_9h * 2 : nil
   end
 end
