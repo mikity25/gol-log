@@ -75,4 +75,6 @@ group :test do
   gem "selenium-webdriver"
   # テスト後のゴミ掃除（DB初期化）
   gem "database_cleaner-active_record"
+  # テストカバレッジ測定ツール
+  gem "simplecov", require: false
 end
