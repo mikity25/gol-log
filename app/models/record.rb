@@ -16,7 +16,7 @@ class Record < ApplicationRecord
 
   # 同一ユーザーの同日・同ゴルフ場重複防止
   validates :golf_course_name, uniqueness: {
-    scope: [:user_id, :played_on],
+    scope: [ :user_id, :played_on ],
     message: "は同じ日にすでに登録されています"
   }
 
