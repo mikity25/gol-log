@@ -10,4 +10,9 @@ Rails.application.routes.draw do
 
   # ヘルスチェック用（Rails8標準設定）
   get "up" => "rails/health#show", as: :rails_health_check
+
+  # 開発環境用のメール受信確認画面（Letter Opener）
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 end

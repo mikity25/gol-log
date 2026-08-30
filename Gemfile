@@ -69,6 +69,9 @@ end
 group :development do
   # エラー画面上で直接コードを実行して調べるデバッグツール
   gem "web-console"
+
+  # 開発環境でのメール受信プレビュー確認ツール
+  gem "letter_opener_web", "~> 3.0"
 end
 
 # テスト環境でのみ使用するGem

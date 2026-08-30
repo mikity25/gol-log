@@ -37,11 +37,14 @@ Rails.application.configure do
   # ----------------------------------------------------
   # メール設定（開発用）
   # ----------------------------------------------------
-  # メール送信に失敗しても例外エラーを発生させない
+  # 送信エラー時に例外を発生させない
   config.action_mailer.raise_delivery_errors = false
 
   # メールテンプレートのキャッシュを無効化（編集を即反映）
   config.action_mailer.perform_caching = false
+
+  # 送信されたメールをブラウザ（letter_opener_web）で受け取る設定
+  config.action_mailer.delivery_method = :letter_opener_web
 
   # メール内のリンク生成時に使用するデフォルトURL（localhost:3000）
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }

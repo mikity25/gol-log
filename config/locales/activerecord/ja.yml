@@ -1,0 +1,20 @@
+ja:
+  activerecord:
+    models:
+      user: "ユーザー"
+      record: "ゴルフカルテ"
+    attributes:
+      user:
+        email: "メールアドレス"
+        password: "パスワード"
+        password_confirmation: "パスワード（確認用）"
+      record:
+        golf_course_name: "ゴルフ場名"
+        played_on: "プレー日"
+        satisfaction: "総合満足度"
+        difficulty: "難易度"
+        weather: "天候"
+        tee: "使用ティー"
+        score_18h: "18Hスコア"
+        score_9h: "9Hスコア"
+        memo: "ひとことメモ"
