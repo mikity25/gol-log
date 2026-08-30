@@ -1,25 +1,32 @@
-<h2>Change your password</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
-
-  <div class="field">
-    <p><%= f.label :password, "New password" %></p>
-    <% if @minimum_password_length %>
-      <p><em>(<%= @minimum_password_length %> characters minimum)</em></p>
-    <% end %>
-    <p><%= f.password_field :password, autofocus: true, autocomplete: "new-password" %></p>
+<div style="max-width: 420px; margin: 40px auto; padding: 32px 24px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); border: 1px solid #e2e8f0;">
+  <div style="text-align: center; margin-bottom: 24px;">
+    <h2 style="font-size: 22px; font-weight: bold; color: #2d6a4f; margin-top: 8px;">新しいパスワードの設定</h2>
+    <p style="font-size: 13px; color: #718096; margin-top: 4px;">新しいパスワードを入力してください</p>
   </div>
 
-  <div class="field">
-    <p><%= f.label :password_confirmation, "Confirm new password" %></p>
-    <p><%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
-  </div>
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+    <%= f.hidden_field :reset_password_token %>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
+    <div style="margin-bottom: 16px;">
+      <%= f.label :password, "新しいパスワード", style: "display: block; font-weight: bold; font-size: 14px; color: #2d3748; margin-bottom: 6px;" %>
+      <% if @minimum_password_length %>
+        <span style="font-size: 12px; color: #a0aec0; display: block; margin-top: -4px; margin-bottom: 6px;">（<%= @minimum_password_length %>文字以上）</span>
+      <% end %>
+      <%= f.password_field :password, autofocus: true, autocomplete: "new-password", placeholder: "••••••••", style: "width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; box-sizing: border-box;" %>
+    </div>
 
-<%= render "devise/shared/links" %>
+    <div style="margin-bottom: 24px;">
+      <%= f.label :password_confirmation, "新しいパスワード（確認用）", style: "display: block; font-weight: bold; font-size: 14px; color: #2d3748; margin-bottom: 6px;" %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "••••••••", style: "width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; box-sizing: border-box;" %>
+    </div>
+
+    <div style="margin-bottom: 16px;">
+      <%= f.submit "パスワードを変更する", style: "width: 100%; background-color: #2d6a4f; color: white; border: none; padding: 12px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s;" %>
+    </div>
+  <% end %>
+
+  <div style="text-align: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid #edf2f7; font-size: 13px;">
+    <%= link_to "ログイン画面に戻る", new_session_path(resource_name), style: "color: #2d6a4f; text-decoration: none; font-weight: bold;" %>
+  </div>
+</div>
