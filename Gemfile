@@ -73,4 +73,6 @@ group :test do
   # ブラウザ動作確認用のテストツール
   gem "capybara"
   gem "selenium-webdriver"
+  # テスト後のゴミ掃除（DB初期化）
+  gem "database_cleaner-active_record"
 end
