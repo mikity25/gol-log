@@ -43,10 +43,10 @@
       </datalist>
     </div>
 
-    <!-- プレー日 -->
+    <!-- プレー日（初期値空欄） -->
     <div>
       <%= f.label :played_on, "プレー日", class: "block text-sm font-semibold text-slate-700 mb-1" %>
-      <%= f.date_field :played_on, value: (record.played_on || Date.today), class: "w-full p-2.5 border border-slate-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 text-sm" %>
+      <%= f.date_field :played_on, class: "w-full p-2.5 border border-slate-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 text-sm" %>
     </div>
 
     <!-- 総合満足度（5段階スケールボタン：必須のため通常のラジオ） -->
@@ -66,7 +66,7 @@
         ].each do |key, num, label_text| %>
           <div>
             <%= f.radio_button :satisfaction, key, id: "record_satisfaction_#{key}", class: "peer hidden" %>
-            <%= f.label "satisfaction_#{key}".to_sym, for: "record_satisfaction_#{key}", class: "block p-2.5 sm:p-3 text-center rounded-xl border border-slate-200 bg-slate-50 cursor-pointer transition-all duration-150 peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:border-emerald-600 peer-checked:shadow-md hover:bg-slate-100 peer-hover:border-slate-300 select-none" do %>
+            <%= f.label :satisfaction, value: key, for: "record_satisfaction_#{key}", class: "block p-2.5 sm:p-3 text-center rounded-xl border border-slate-200 bg-slate-50 cursor-pointer transition-all duration-150 peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:border-emerald-600 peer-checked:shadow-md hover:bg-slate-100 peer-hover:border-slate-300 select-none" do %>
               <div class="flex items-center justify-center gap-1">
                 <svg class="w-4 h-4 fill-amber-400 peer-checked:fill-amber-300" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                 <span class="text-base sm:text-lg font-bold"><%= num %></span>
@@ -125,7 +125,7 @@
         <% ["とても美味しい", "美味しい", "普通", "イマイチ"].each do |fr| %>
           <div data-action="click->radio-toggle#toggle">
             <%= f.radio_button :food_rating, fr, id: "record_food_rating_#{fr}", class: "peer hidden" %>
-            <%= f.label "food_rating_#{fr}".to_sym, for: "record_food_rating_#{fr}", class: "block py-2 text-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer transition peer-checked:bg-emerald-700 peer-checked:text-white peer-checked:border-emerald-700 select-none hover:bg-slate-100" do %>
+            <%= f.label :food_rating, value: fr, for: "record_food_rating_#{fr}", class: "block py-2 text-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer transition peer-checked:bg-emerald-700 peer-checked:text-white peer-checked:border-emerald-700 select-none hover:bg-slate-100" do %>
               <%= fr %>
             <% end %>
           </div>
@@ -180,7 +180,7 @@
         ].each do |val, label_text, color_classes| %>
           <div data-action="click->radio-toggle#toggle">
             <%= f.radio_button :tee, val, id: "record_tee_#{val}", class: "peer hidden" %>
-            <%= f.label "tee_#{val}".to_sym, for: "record_tee_#{val}", class: "block py-2 text-center rounded-xl border text-xs font-bold cursor-pointer transition select-none #{color_classes}" do %>
+            <%= f.label :tee, value: val, for: "record_tee_#{val}", class: "block py-2 text-center rounded-xl border text-xs font-bold cursor-pointer transition select-none #{color_classes}" do %>
               <%= label_text %>
             <% end %>
           </div>
@@ -195,7 +195,7 @@
         <% ["晴れ", "くもり", "雨", "強風", "霧", "雪"].each do |w| %>
           <div data-action="click->radio-toggle#toggle">
             <%= f.radio_button :weather, w, id: "record_weather_#{w}", class: "peer hidden" %>
-            <%= f.label "weather_#{w}".to_sym, for: "record_weather_#{w}", class: "block py-2 text-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer transition peer-checked:bg-emerald-700 peer-checked:text-white peer-checked:border-emerald-700 select-none hover:bg-slate-100" do %>
+            <%= f.label :weather, value: w, for: "record_weather_#{w}", class: "block py-2 text-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer transition peer-checked:bg-emerald-700 peer-checked:text-white peer-checked:border-emerald-700 select-none hover:bg-slate-100" do %>
               <%= w %>
             <% end %>
           </div>
@@ -214,7 +214,7 @@
         ].each do |val, label_text| %>
           <div data-action="click->radio-toggle#toggle">
             <%= f.radio_button :pace, val, id: "record_pace_#{val}", class: "peer hidden" %>
-            <%= f.label "pace_#{val}".to_sym, for: "record_pace_#{val}", class: "block py-2 text-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer transition peer-checked:bg-emerald-700 peer-checked:text-white peer-checked:border-emerald-700 select-none hover:bg-slate-100" do %>
+            <%= f.label :pace, value: val, for: "record_pace_#{val}", class: "block py-2 text-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer transition peer-checked:bg-emerald-700 peer-checked:text-white peer-checked:border-emerald-700 select-none hover:bg-slate-100" do %>
               <%= label_text %>
             <% end %>
           </div>
@@ -248,7 +248,7 @@
         <% ["易しい", "普通", "やや難しい", "難しい・戦略的"].each do |diff| %>
           <div data-action="click->radio-toggle#toggle">
             <%= f.radio_button :difficulty, diff, id: "record_difficulty_#{diff}", class: "peer hidden" %>
-            <%= f.label "difficulty_#{diff}".to_sym, for: "record_difficulty_#{diff}", class: "block py-2 text-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer transition peer-checked:bg-emerald-700 peer-checked:text-white peer-checked:border-emerald-700 select-none hover:bg-slate-100" do %>
+            <%= f.label :difficulty, value: diff, for: "record_difficulty_#{diff}", class: "block py-2 text-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer transition peer-checked:bg-emerald-700 peer-checked:text-white peer-checked:border-emerald-700 select-none hover:bg-slate-100" do %>
               <%= diff %>
             <% end %>
           </div>
@@ -325,7 +325,7 @@
         ].each do |val, label_text| %>
           <div data-action="click->radio-toggle#toggle">
             <%= f.radio_button :cart_type, val, id: "record_cart_type_#{val}", class: "peer hidden" %>
-            <%= f.label "cart_type_#{val}".to_sym, for: "record_cart_type_#{val}", class: "block py-2 text-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer transition peer-checked:bg-emerald-700 peer-checked:text-white peer-checked:border-emerald-700 select-none hover:bg-slate-100" do %>
+            <%= f.label :cart_type, value: val, for: "record_cart_type_#{val}", class: "block py-2 text-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer transition peer-checked:bg-emerald-700 peer-checked:text-white peer-checked:border-emerald-700 select-none hover:bg-slate-100" do %>
               <%= label_text %>
             <% end %>
           </div>
@@ -389,7 +389,7 @@
         <% ["大満足", "満足", "普通", "少し残念"].each do |br| %>
           <div data-action="click->radio-toggle#toggle">
             <%= f.radio_button :bath_rating, br, id: "record_bath_rating_#{br}", class: "peer hidden" %>
-            <%= f.label "bath_rating_#{br}".to_sym, for: "record_bath_rating_#{br}", class: "block py-2 text-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer transition peer-checked:bg-emerald-700 peer-checked:text-white peer-checked:border-emerald-700 select-none hover:bg-slate-100" do %>
+            <%= f.label :bath_rating, value: br, for: "record_bath_rating_#{br}", class: "block py-2 text-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer transition peer-checked:bg-emerald-700 peer-checked:text-white peer-checked:border-emerald-700 select-none hover:bg-slate-100" do %>
               <%= br %>
             <% end %>
           </div>
