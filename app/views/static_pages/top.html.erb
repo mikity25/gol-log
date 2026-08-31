@@ -12,12 +12,14 @@
       自分専用 ゴルフ場カルテ
     </p>
 
-    <!-- メインロゴ（Tailwind版） -->
-    <div class="inline-flex items-center justify-center gap-3.5 mb-7">
-      <svg class="w-12 h-12 sm:w-16 sm:h-16 text-emerald-800 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- メインロゴ（gollogの文字を完全センター配置 ＆ アイコンを左隣に配置） -->
+    <div class="relative inline-block mb-7 text-center">
+      <!-- 左隣に寄り添うアイコン（絶対配置で文字の左側に配置） -->
+      <svg class="absolute right-full top-1/2 -translate-y-1/2 mr-2 w-10 h-10 sm:w-14 sm:h-14 text-emerald-800 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 18v-15l7 4l-7 4" />
         <path d="M9 17.67c-.62 .36 -1 .82 -1 1.33c0 1.1 1.8 2 4 2s4 -.9 4 -2c0 -.5 -.38 -.97 -1 -1.33" />
       </svg>
+      <!-- 完全中央に配置されるブランド名テキスト -->
       <h1 class="font-['Josefin_Sans',sans-serif] text-5xl sm:text-7xl font-bold text-emerald-800 tracking-wider leading-none m-0">
         gollog
       </h1>

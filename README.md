@@ -1,3 +1,12 @@
+# gollog（ゴルログ）
+
+**自分視点の本音メモで、次のコース選びを最適化する「自分専用 ゴルフ場カルテ」**
+
+**本番環境URL**: [https://gollog.onrender.com/](https://gollog.onrender.com/)
+
+---
+
+
 ## 1. サービス概要
 
 
@@ -180,23 +189,26 @@ Googleマップや標準メモ帳では、ゴルフ特有の評価項目（難�
 ### 7-1. MVPで作る機能
 
 * 会員登録・ログイン機能:
-自分専用の非公開カルテとしてデータを保持・管理するためのユーザー認証機能。
+自分専用の非公開カルテとしてデータを保持・管理するためのユーザー認証機能（Devise導入、日本語化対応）。
 
 * ゴルフ場カルテの登録・編集・削除機能:
 ゴルフ場名、ラウンド日、総スコア、満足度、難易度、食事、設備等の評価をボタンタップ中心で手軽に記録・更新できる機能。
-**満足度・難易度・食事・設備等の評価は、ボタンタップ（ラジオボタンやenum）で入力できるようにする。**
+**満足度・難易度・食事・設備等の評価は、ボタンタップ（Stimulusトグルボタンやプルダウン）で入力できるようにする。**
 例:
 - 満足度: ⭐️⭐️⭐️⭐️⭐️（5段階評価）
 - 難易度: 😎 簡単 / 🥱 普通 / 😅 やや難 / 😰 難しい
 - 食事: 👍 美味しい / 👌 普通 / 👎 微妙
+
 **ゴルフ場名は、数値入力・文字入力が必要だが、入力項目を最小限に抑える。**
+
 **同じゴルフ場に複数回訪問した場合、訪問日ごとにカルテを作成する。**
 （MVPでは「記録のハードルを下げる」ことを最優先にし、複数回の訪問履歴を一覧で見やすく表示する機能は本リリースで実装する。）
-**9ホールと18ホールのスコアをそれぞれ入力できるようにする。**
+
+**9ホール（ハーフ）と18ホールのスコア入力および18H換算自動計算。**
+（9Hスコア入力時に18H換算目安スコアを自動算出し、詳細画面で確認可能。）
 
 * カルテの一覧・詳細表示機能:
-登録したゴルフ場カルテを一覧で確認し、個別の評価内容をサクッと振り返ることができる機能。
-
+登録したゴルフ場カルテをカード形式の一覧で確認し、個別の評価内容をサクッと振り返ることができる機能。スマホ実機に完全最適化したレスポンシブ表示に対応。
 
 ### 7-2. 本リリースで作る機能
 
@@ -285,7 +297,7 @@ MVPの段階では「自分で分かればOK」というプライベートカル
 今後どのような機能を追加・拡張する場合であっても、「画面をごちゃごちゃさせない」「ボタンタップ中心で迷わず使える」という本アプリ最大の強みを徹底し、あらゆるゴルファーがストレスなく使い続けられるシンプルな操作感を維持する。
 
 
-###　検討したが見送った機能
+### 検討したが見送った機能
 
 * 自給自足型フォーム（過去の登録リストからプルダウン選択）:
 「表記揺れを防ぐ」という点で有効だが、MVPでは手入力のみとし、本リリースで外部API連携による自動補完を実装することで根本解決する方針としたため見送った。
@@ -302,19 +314,23 @@ MVPの段階では「自分で分かればOK」というプライベートカル
 ## 10. 技術スタック
 
 
-### 10-1. 使用予定の技術
+### 10-1. 使用技術
 
-**バックエンド**: Ruby on Rails 8.0
+**バックエンド**: Ruby 3.3.0 / Ruby on Rails 8.0.0  
 カリキュラムで学習した技術を活かし、機能実装に集中できるため
 
-**フロントエンド**: ERB / HTML / CSS / JavaScript / Tailwind CSS
-シンプルなUIで十分なため、React などは使わずに ERB で実装する。Tailwind CSS でスタイリングを効率化
+**フロントエンド**: ERB / Tailwind CSS / Hotwire (Turbo, Stimulus)  
+シンプルなUIで十分なため、React などは使わずに ERB と Hotwire で実装。Tailwind CSS でスマホレスポンシブなスタイリングを効率化
 
-**データベース**: PostgreSQL
+**データベース**: PostgreSQL 16  
 Renderでのデプロイに対応しており、Rails との相性も良いため
 
-**デプロイ先**: Render
-無料枠で Rails アプリをデプロイでき、設定がシンプルなため
+**認証**: Devise (devise-i18n による日本語化)
+
+**テスト・静的解析**: RSpec / FactoryBot / Capybara / RuboCop / SimpleCov
+
+**デプロイ・CI**: Render / Docker / GitHub Actions (CI)  
+Renderで Rails アプリをデプロイし、GitHub Actions による自動テスト・Lint チェック環境を構築
 
 **今回チャレンジしたい点：**
 * ボタンタップ中心（enumやラジオボタン）で入力ストレスを極限まで減らしたUI/UX設計
@@ -337,7 +353,7 @@ Figma：https://www.figma.com/design/WQKSmlXV0Wz9FabuJLlhFM/gol-log%E3%80%80%E7%
 
 ## 12. ER図
 
-[![Image from Gyazo](https://i.gyazo.com/62e5d6e2617415e824f9a335fb43079c.png)](https://gyazo.com/62e5d6e2617415e824f9a335fb43079c)
+[![Image from Gyazo](https://i.gyazo.com/60ce06bafde1a7021297b07a481074bb.png)](https://gyazo.com/60ce06bafde1a7021297b07a481074bb)
 
 ### テーブル詳細
 
@@ -346,9 +362,12 @@ Figma：https://www.figma.com/design/WQKSmlXV0Wz9FabuJLlhFM/gol-log%E3%80%80%E7%
 | カラム名 | データ型 | 制約 | 説明 |
 | --- | --- | --- | --- |
 | id | bigint | PRIMARY KEY | ユーザーID |
-| name | string | - | ユーザー名（任意、マイページ表示用） |
+| name | string | - | ユーザー名（任意） |
 | email | string | NOT NULL, UNIQUE | メールアドレス（ログイン用） |
 | encrypted_password | string | NOT NULL | パスワード（Devise管理） |
+| reset_password_token | string | UNIQUE | パスワード再設定トークン |
+| reset_password_sent_at | datetime | - | パスワード再設定メール送信日時 |
+| remember_created_at | datetime | - | ログイン記憶日時 |
 | created_at | datetime | NOT NULL | 作成日時 |
 | updated_at | datetime | NOT NULL | 更新日時 |
 
@@ -358,9 +377,9 @@ Figma：https://www.figma.com/design/WQKSmlXV0Wz9FabuJLlhFM/gol-log%E3%80%80%E7%
 | --- | --- | --- | --- |
 | id | bigint | PRIMARY KEY | カルテID |
 | user_id | bigint | NOT NULL, FOREIGN KEY | 作成者のユーザーID |
-| golf_course_name | string | NOT NULL | ゴルフ場名（同一ユーザー・同日重複不可） |
+| golf_course_name | string | NOT NULL | ゴルフ場名 |
 | played_on | date | NOT NULL | プレー日 |
-| satisfaction | integer | NOT NULL | 総合満足度（Enum: star1〜star5） |
+| satisfaction | integer | NOT NULL | 総合満足度（1〜5段階評価） |
 | score_18h | integer | - | 18ホールのスコア（任意） |
 | score_9h | integer | - | 9ホールのスコア（任意） |
 | converted_score_18h | integer | - | 18ホール換算スコア（自動計算、任意） |
@@ -372,23 +391,24 @@ Figma：https://www.figma.com/design/WQKSmlXV0Wz9FabuJLlhFM/gol-log%E3%80%80%E7%
 | brand | string | - | 系列・ブランド（アコーディア/PGM等） |
 | total_cost | integer | - | 総額料金（円） |
 | cost_memo | string | - | 料金・プランメモ |
-| plan_options | text | - | プラン・オプション（配列シリアライズ） |
+| plan_options | string | - | プラン・オプション（複数選択） |
 | food_rating | string | - | レストラン評価 |
-| food_memo | string | - | 食事メモ・メニュー |
+| food_memo | text | - | 食事メモ・メニュー |
 | difficulty | string | - | 総合難易度 |
 | course_width | string | - | コース広さ |
 | fairway | string | - | フェアウェイ起伏 |
 | ob_risk | string | - | OBの出やすさ |
 | bunker_difficulty | string | - | バンカー難易度 |
 | hazard | string | - | 池・谷・崖の多さ |
-| green_features | text | - | グリーン傾向（配列シリアライズ） |
+| green_features | string | - | グリーン傾向（複数選択） |
 | green_memo | string | - | グリーン補足メモ |
 | toilet_rating | string | - | コース内トイレ評価 |
 | cart_type | string | - | カート移動方式（リモコン/乗り入れ等） |
 | maintenance | string | - | メンテナンス評価 |
 | service | string | - | 接客評価 |
-| driving_range | text | - | 練習場設備（配列シリアライズ） |
-| bath_features | text | - | お風呂設備（配列シリアライズ） |
+| driving_range | string | - | 練習場設備（複数選択） |
+| bath_rating | string | - | お風呂総合評価 |
+| bath_features | string | - | お風呂設備（複数選択） |
 | bath_memo | string | - | お風呂メモ |
 | shop_memo | string | - | 売店・自販機メモ |
 | memo | text | - | 本音メモ・次回への振り返り |
