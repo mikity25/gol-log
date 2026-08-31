@@ -222,15 +222,15 @@
       </div>
     </div>
 
-    <!-- プレースタイル ＆ 系列ブランド（プルダウン） -->
+    <!-- プレースタイル ＆ 系列ブランド（include_blankで未選択へ戻せる） -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-100">
       <div>
         <%= f.label :play_style, "プレースタイル", class: "block text-xs text-slate-600 mb-1" %>
-        <%= f.select :play_style, ["通常(ハーフ休憩あり)", "スループレー", "早朝スルー", "薄暮ハーフ", "コンペ", "練習ラウンド"], { prompt: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+        <%= f.select :play_style, ["通常(ハーフ休憩あり)", "スループレー", "早朝スルー", "薄暮ハーフ", "コンペ", "練習ラウンド"], { include_blank: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
       </div>
       <div>
         <%= f.label :brand, "ゴルフ場系列・ブランド", class: "block text-xs text-slate-600 mb-1" %>
-        <%= f.select :brand, ["アコーディア", "PGM", "太平洋クラブ", "東急リゾート", "市営・パブリック", "その他・単体"], { prompt: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+        <%= f.select :brand, ["アコーディア", "PGM", "太平洋クラブ", "東急リゾート", "市営・パブリック", "その他・単体"], { include_blank: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
       </div>
     </div>
   </div>
@@ -256,30 +256,30 @@
       </div>
     </div>
 
-    <!-- コース広さ ＆ フェアウェイ ＆ OB出やすさ -->
+    <!-- コース広さ ＆ フェアウェイ ＆ OB出やすさ（include_blankで未選択へ戻せる） -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 border-t border-slate-100 pt-3">
       <div>
         <%= f.label :course_width, "コースの広さ", class: "block text-xs text-slate-600 mb-1" %>
-        <%= f.select :course_width, ["広い（フェアウェイ乗せやすい）", "やや広い", "普通", "やや狭い", "狭い（プレッシャーあり）"], { prompt: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+        <%= f.select :course_width, ["広い（フェアウェイ乗せやすい）", "やや広い", "普通", "やや狭い", "狭い（プレッシャーあり）"], { include_blank: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
       </div>
       <div>
         <%= f.label :fairway, "フェアウェイ起伏", class: "block text-xs text-slate-600 mb-1" %>
-        <%= f.select :fairway, ["フラット(平坦)", "適度な起伏(普通)", "アンジュレーション強め", "アップダウン激しい(山岳)"], { prompt: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+        <%= f.select :fairway, ["フラット(平坦)", "適度な起伏(普通)", "アンジュレーション強め", "アップダウン激しい(山岳)"], { include_blank: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
       </div>
       <div>
         <%= f.label :ob_risk, "OBの出やすさ", class: "block text-xs text-slate-600 mb-1" %>
-        <%= f.select :ob_risk, ["出にくい(安心)", "普通", "ワンペナ多め", "出やすい(狭い)"], { prompt: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+        <%= f.select :ob_risk, ["出にくい(安心)", "普通", "ワンペナ多め", "出やすい(狭い)"], { include_blank: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
       </div>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <div>
         <%= f.label :bunker_difficulty, "バンカーの難しさ", class: "block text-xs text-slate-600 mb-1" %>
-        <%= f.select :bunker_difficulty, ["少ない・浅い", "普通", "アゴが高い(脱出難)", "数が多い", "気にならない"], { prompt: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+        <%= f.select :bunker_difficulty, ["少ない・浅い", "普通", "アゴが高い(脱出難)", "数が多い", "気にならない"], { include_blank: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
       </div>
       <div>
         <%= f.label :hazard, "池・谷・崖の多さ", class: "block text-xs text-slate-600 mb-1" %>
-        <%= f.select :hazard, ["ほぼなし", "適度にある", "池・谷越え多め"], { prompt: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+        <%= f.select :hazard, ["ほぼなし", "適度にある", "池・谷越え多め"], { include_blank: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
       </div>
     </div>
 
@@ -333,19 +333,19 @@
       </div>
     </div>
 
-    <!-- トイレ・メンテ・接客 -->
+    <!-- トイレ・メンテ・接客（include_blankで未選択へ戻せる） -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 border-t border-slate-100 pt-3">
       <div>
         <%= f.label :toilet_rating, "コース内トイレ", class: "block text-xs text-slate-600 mb-1" %>
-        <%= f.select :toilet_rating, ["多い", "普通", "少ない"], { prompt: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+        <%= f.select :toilet_rating, ["多い", "普通", "少ない"], { include_blank: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
       </div>
       <div>
         <%= f.label :maintenance, "コースメンテナンス", class: "block text-xs text-slate-600 mb-1" %>
-        <%= f.select :maintenance, ["素晴らしい", "良い", "普通", "荒れ気味"], { prompt: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+        <%= f.select :maintenance, ["素晴らしい", "良い", "普通", "荒れ気味"], { include_blank: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
       </div>
       <div>
         <%= f.label :service, "スタッフ接客", class: "block text-xs text-slate-600 mb-1" %>
-        <%= f.select :service, ["丁寧で心地よい", "良い", "普通", "少し残念"], { prompt: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
+        <%= f.select :service, ["丁寧で心地よい", "良い", "普通", "少し残念"], { include_blank: "未選択" }, class: "w-full p-2 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white" %>
       </div>
     </div>
 
@@ -404,7 +404,7 @@
         <% [
           ["温泉・露天風呂あり", "温泉あり"],
           ["サウナ・水風呂あり", "サウナあり"],
-          ["高級ドライヤー(ReFa等)", "高級ドライヤー"],
+          ["高級ドライヤー(ReFa等)あり", "高級ドライヤー(ReFa等)あり"],
           ["アメニティ充実", "アメニティ充実"],
           ["シャワーのみ", "シャワーのみ"],
           ["お風呂なし", "お風呂なし"]
