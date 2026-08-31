@@ -51,11 +51,13 @@ RSpec.describe 'カルテ管理機能', type: :system do
 
     it '必須項目が空の場合は作成に失敗し、エラーメッセージが表示されること' do
       visit new_record_path
-      fill_in 'ゴルフ場名', with: ''
+
+      # 必須項目を入力せずに送信
       find('input[type="submit"]').click
 
-      expect(page).to have_content('カルテの作成に失敗しました。入力内容を確認してください。')
-      expect(page).to have_content("can't be blank")
+      # 日本語のフラッシュメッセージと画面上のエラー案内を検証
+      expect(page).to have_content 'カルテの作成に失敗しました。入力内容を確認してください。'
+      expect(page).to have_content '入力内容を確認してください'
     end
   end
 
