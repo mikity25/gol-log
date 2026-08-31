@@ -1,35 +1,37 @@
-<header style="background-color: #2d6a4f; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center;">
-  <!-- ロゴ -->
-  <div style="font-size: 24px; font-weight: bold;">
-    <%= link_to root_path, style: "color: white; text-decoration: none; font-family: 'Josefin Sans', sans-serif; letter-spacing: 1px;" do %>
-      ⛳️ gollog
+<header style="background-color: #2d6a4f; color: white; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.08);">
+  <!-- ロゴ（SVGフラッグ + テキスト） -->
+  <div>
+    <%= link_to root_path, style: "color: white; text-decoration: none; display: flex; align-items: center; gap: 8px;" do %>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+        <line x1="4" y1="22" x2="4" y2="15"></line>
+      </svg>
+      <span style="font-family: 'Josefin Sans', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 1px;">gollog</span>
     <% end %>
   </div>
 
   <!-- ナビゲーションメニュー -->
   <nav>
-    <ul style="list-style: none; display: flex; align-items: center; gap: 16px; margin: 0; padding: 0;">
+    <ul style="list-style: none; display: flex; align-items: center; gap: 14px; margin: 0; padding: 0;">
       <% if user_signed_in? %>
-        <!-- ログイン中の表示 -->
         <li>
           <%= link_to "カルテ一覧", records_path, style: "color: white; text-decoration: none; font-size: 14px; opacity: 0.9;" %>
         </li>
         <li>
-          <%= link_to "+ 新規カルテ", new_record_path, style: "color: #2d6a4f; background-color: white; text-decoration: none; font-size: 14px; font-weight: bold; padding: 6px 12px; border-radius: 4px;" %>
+          <%= link_to "+ 新規カルテ", new_record_path, style: "color: #2d6a4f; background-color: white; text-decoration: none; font-size: 14px; font-weight: bold; padding: 6px 14px; border-radius: 6px;" %>
         </li>
         <li>
           <%= link_to "アカウント設定", edit_user_registration_path, style: "color: white; text-decoration: none; font-size: 14px; opacity: 0.9;" %>
         </li>
         <li>
-          <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, style: "color: white; text-decoration: none; font-size: 14px; border: 1px solid rgba(255,255,255,0.6); padding: 5px 12px; border-radius: 4px;" %>
+          <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, style: "color: white; text-decoration: none; font-size: 14px; border: 1px solid rgba(255,255,255,0.6); padding: 5px 12px; border-radius: 6px;" %>
         </li>
       <% else %>
-        <!-- 未ログイン時の表示 -->
         <li>
-          <%= link_to "新規登録", new_user_registration_path, style: "color: #2d6a4f; background-color: white; text-decoration: none; font-size: 14px; font-weight: bold; padding: 6px 14px; border-radius: 4px;" %>
+          <%= link_to "新規登録", new_user_registration_path, style: "color: #2d6a4f; background-color: white; text-decoration: none; font-size: 14px; font-weight: bold; padding: 6px 14px; border-radius: 6px;" %>
         </li>
         <li>
-          <%= link_to "ログイン", new_user_session_path, style: "color: white; text-decoration: none; font-size: 14px; border: 1px solid rgba(255,255,255,0.6); padding: 5px 12px; border-radius: 4px;" %>
+          <%= link_to "ログイン", new_user_session_path, style: "color: white; text-decoration: none; font-size: 14px; border: 1px solid rgba(255,255,255,0.6); padding: 5px 12px; border-radius: 6px;" %>
         </li>
       <% end %>
     </ul>

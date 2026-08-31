@@ -1,30 +1,41 @@
 <!-- メインヒーローセクション -->
-<section style="background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%); text-align: center; padding: clamp(48px, 8vw, 80px) 20px 40px; border-bottom: 1px solid #e2e8f0;">
-  <div style="max-width: 720px; margin: 0 auto;">
-    
+<section style="background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%); text-align: center; padding: clamp(48px, 8vw, 84px) 20px 48px; border-bottom: 1px solid #e2e8f0;">
+  <div style="max-width: 760px; margin: 0 auto;">
+
     <!-- サブキャッチ 1 -->
-    <p style="font-size: clamp(14px, 3.5vw, 16px); color: #2d6a4f; font-weight: 700; letter-spacing: 0.05em; margin: 0 0 8px 0;">
+    <p style="font-size: clamp(13px, 3.2vw, 15px); color: #2d6a4f; font-weight: 700; letter-spacing: 0.08em; margin: 0 0 10px 0;">
       自分視点の本音メモで、次のコース選びを最適化
     </p>
 
     <!-- サブキャッチ 2 -->
-    <p style="font-size: clamp(16px, 4vw, 20px); color: #334155; font-weight: 700; margin: 0 0 20px 0;">
+    <p style="font-size: clamp(16px, 4vw, 22px); color: #334155; font-weight: 700; margin: 0 0 20px 0; letter-spacing: 0.02em;">
       自分専用 ゴルフ場カルテ
     </p>
 
-    <!-- メインロゴ（レスポンシブ特大表示） -->
-    <h1 style="font-family: 'Josefin Sans', sans-serif; font-size: clamp(44px, 12vw, 68px); font-weight: 700; color: #2d6a4f; letter-spacing: 2px; line-height: 1.1; margin: 0 0 32px 0;">
-      gollog
-    </h1>
+    <!-- メインロゴ（SVGアイコン + タイトル） -->
+    <div style="display: inline-flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 28px;">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+        <line x1="4" y1="22" x2="4" y2="15"></line>
+      </svg>
+      <h1 style="font-family: 'Josefin Sans', sans-serif; font-size: clamp(48px, 13vw, 76px); font-weight: 700; color: #2d6a4f; letter-spacing: 2px; line-height: 1; margin: 0;">
+        gollog
+      </h1>
+    </div>
 
-    <!-- ユーザー状態に応じたアクションボタン -->
-    <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 12px;">
+    <!-- コンセプトの補足 -->
+    <p style="font-size: clamp(13px, 3.2vw, 14px); color: #64748b; line-height: 1.7; max-width: 540px; margin: 0 auto 32px auto;">
+      他人の口コミではなく、自分が感じたリアルな難易度・食事・設備をボタンタップでサクッと蓄積。誰にも見られない完全プライベートな記録帳です。
+    </p>
+
+    <!-- アクションボタン -->
+    <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
       <% if user_signed_in? %>
-        <%= link_to "カルテ一覧を見る", records_path, style: "background-color: #2d6a4f; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: bold; display: inline-block; box-shadow: 0 4px 10px rgba(45, 106, 79, 0.25); min-width: 180px;" %>
-        <%= link_to "+ 新規カルテ作成", new_record_path, style: "background-color: #ffffff; color: #2d6a4f; border: 2px solid #2d6a4f; padding: 12px 26px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: bold; display: inline-block; min-width: 180px;" %>
+        <%= link_to "カルテ一覧を見る", records_path, style: "background-color: #2d6a4f; color: #ffffff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: bold; display: inline-block; box-shadow: 0 4px 12px rgba(45, 106, 79, 0.25); min-width: 180px;" %>
+        <%= link_to "+ 新規カルテ作成", new_record_path, style: "background-color: #ffffff; color: #2d6a4f; border: 2px solid #2d6a4f; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: bold; display: inline-block; min-width: 180px;" %>
       <% else %>
-        <%= link_to "無料ではじめる（新規登録）", new_user_registration_path, style: "background-color: #2d6a4f; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: bold; display: inline-block; box-shadow: 0 4px 10px rgba(45, 106, 79, 0.25); min-width: 200px;" %>
-        <%= link_to "ログイン", new_user_session_path, style: "background-color: #ffffff; color: #2d6a4f; border: 2px solid #2d6a4f; padding: 12px 26px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: bold; display: inline-block; min-width: 120px;" %>
+        <%= link_to "無料ではじめる（新規登録）", new_user_registration_path, style: "background-color: #2d6a4f; color: #ffffff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: bold; display: inline-block; box-shadow: 0 4px 12px rgba(45, 106, 79, 0.25); min-width: 200px;" %>
+        <%= link_to "ログイン", new_user_session_path, style: "background-color: #ffffff; color: #2d6a4f; border: 2px solid #2d6a4f; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: bold; display: inline-block; min-width: 120px;" %>
       <% end %>
     </div>
 
@@ -32,46 +43,58 @@
 </section>
 
 <!-- サービスの特徴セクション -->
-<section style="max-width: 960px; margin: 50px auto 60px; padding: 0 20px;">
-  <div style="text-align: center; margin-bottom: 40px;">
-    <h2 style="font-size: clamp(20px, 5vw, 24px); font-weight: 700; color: #1e293b; margin: 0 0 8px 0;">
-      <span style="font-family: 'Josefin Sans', sans-serif; color: #2d6a4f;">gollog</span> の特徴
+<section style="max-width: 980px; margin: 48px auto 64px; padding: 0 20px;">
+  <div style="text-align: center; margin-bottom: 36px;">
+    <h2 style="font-size: clamp(20px, 4.5vw, 24px); font-weight: 700; color: #1e293b; margin: 0 0 6px 0;">
+      <span style="font-family: 'Josefin Sans', sans-serif; color: #2d6a4f;">gollog</span> が選ばれる3つの理由
     </h2>
-    <p style="font-size: 13px; color: #64748b; margin: 0;">シンプルに、あなたのためのゴルフ記録を残す</p>
+    <p style="font-size: 13px; color: #64748b; margin: 0;">シンプルだから、ラウンド直後でも迷わず続く</p>
   </div>
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
-    
-    <!-- 特徴 1 -->
-    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);">
-      <div style="display: inline-block; font-family: 'Josefin Sans', sans-serif; font-size: 13px; font-weight: 700; color: #2d6a4f; background: #e8f5e9; padding: 4px 10px; border-radius: 4px; margin-bottom: 14px;">
-        01
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+
+    <!-- 特徴 1: ボタンタップでサクッと記録 -->
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 26px 22px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); display: flex; flex-direction: column;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+        <span style="font-family: 'Josefin Sans', sans-serif; font-size: 12px; font-weight: 700; color: #2d6a4f; background: #e8f5e9; padding: 4px 10px; border-radius: 4px;">01</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        </svg>
       </div>
-      <h3 style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 8px 0;">自分視点の本音メモ</h3>
-      <p style="font-size: 13px; color: #64748b; line-height: 1.6; margin: 0;">
-        コースの難易度やグリーンの速さ、食事の満足度など、公の口コミには書けない率直な感想を記録できます。
+      <h3 style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 8px 0;">ボタンタップで即座に記録</h3>
+      <p style="font-size: 13px; color: #64748b; line-height: 1.65; margin: 0;">
+        疲れたラウンド後でも、満足度・難易度・食事などをボタン中心で記録。長文入力をしなくても自分基準のカルテが完成します。
       </p>
     </div>
 
-    <!-- 特徴 2 -->
-    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);">
-      <div style="display: inline-block; font-family: 'Josefin Sans', sans-serif; font-size: 13px; font-weight: 700; color: #2d6a4f; background: #e8f5e9; padding: 4px 10px; border-radius: 4px; margin-bottom: 14px;">
-        02
+    <!-- 特徴 2: 本音メモ＆非公開 -->
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 26px 22px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); display: flex; flex-direction: column;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+        <span style="font-family: 'Josefin Sans', sans-serif; font-size: 12px; font-weight: 700; color: #2d6a4f; background: #e8f5e9; padding: 4px 10px; border-radius: 4px;">02</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
       </div>
-      <h3 style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 8px 0;">次のコース選びを最適化</h3>
-      <p style="font-size: 13px; color: #64748b; line-height: 1.6; margin: 0;">
-        「前回の印象はどうだったか」をラウンド前に素早く振り返り、リピートやコース選定の判断材料にできます。
+      <h3 style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 8px 0;">他人の目を気にしない本音メモ</h3>
+      <p style="font-size: 13px; color: #64748b; line-height: 1.65; margin: 0;">
+        公開前提の口コミサイトでは書けない「設備の印象」や「注意点」も自由にメモ。自分だけの非公開カルテだから安心です。
       </p>
     </div>
 
-    <!-- 特徴 3 -->
-    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);">
-      <div style="display: inline-block; font-family: 'Josefin Sans', sans-serif; font-size: 13px; font-weight: 700; color: #2d6a4f; background: #e8f5e9; padding: 4px 10px; border-radius: 4px; margin-bottom: 14px;">
-        03
+    <!-- 特徴 3: 次のコース選びを迷わない -->
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 26px 22px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); display: flex; flex-direction: column;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+        <span style="font-family: 'Josefin Sans', sans-serif; font-size: 12px; font-weight: 700; color: #2d6a4f; background: #e8f5e9; padding: 4px 10px; border-radius: 4px;">03</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
       </div>
-      <h3 style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 8px 0;">蓄積される専用データベース</h3>
-      <p style="font-size: 13px; color: #64748b; line-height: 1.6; margin: 0;">
-        カルテが増えるほど、あなた専用のコースデータが蓄積され、ゴルフライフの振り返りがより楽しくなります。
+      <h3 style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 8px 0;">次のコース選び・リベンジに直結</h3>
+      <p style="font-size: 13px; color: #64748b; line-height: 1.65; margin: 0;">
+        「前回の印象はどうだったか」「スコアはどうだったか」をすぐに見返し、納得感のあるコース選定や友人への推薦に活かせます。
       </p>
     </div>
 

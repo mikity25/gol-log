@@ -25,7 +25,7 @@ class RecordsController < ApplicationController
     @record = current_user.records.build(record_params)
 
     if @record.save
-      redirect_to record_path(@record), notice: "ゴルフカルテを作成しました🆕"
+      redirect_to record_path(@record), notice: "ゴルフカルテを作成しました"
     else
       flash.now[:alert] = "カルテの作成に失敗しました。入力内容を確認してください。"
       render :new, status: :unprocessable_entity
@@ -35,7 +35,7 @@ class RecordsController < ApplicationController
   # カルテ更新処理
   def update
     if @record.update(record_params)
-      redirect_to record_path(@record), notice: "ゴルフカルテを更新しました🆕"
+      redirect_to record_path(@record), notice: "ゴルフカルテを更新しました"
     else
       flash.now[:alert] = "カルテの更新に失敗しました。入力内容を確認してください。"
       render :edit, status: :unprocessable_entity
@@ -45,7 +45,7 @@ class RecordsController < ApplicationController
   # カルテ削除処理
   def destroy
     @record.destroy
-    redirect_to records_path, notice: "ゴルフカルテを削除しました🗑️", status: :see_other
+    redirect_to records_path, notice: "ゴルフカルテを削除しました", status: :see_other
   end
 
   private
@@ -77,6 +77,7 @@ class RecordsController < ApplicationController
       :bunker_difficulty,
       :hazard,
       :toilet_rating,
+      :bath_rating,
       :bath_memo,
       :shop_memo,
       :cart_type,

@@ -8,7 +8,10 @@
       </p>
     </div>
     <div>
-      <%= link_to "＋ 新しいカルテを書く", new_record_path, class: "inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 px-5 rounded-xl shadow-md transition text-sm cursor-pointer" %>
+      <%= link_to new_record_path, class: "inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 px-5 rounded-xl shadow-md transition text-sm cursor-pointer" do %>
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        新しいカルテを書く
+      <% end %>
     </div>
   </div>
 
@@ -20,18 +23,19 @@
           <!-- 上段: 日付 ＆ 平日・休日バッジ ＆ 同伴者 ＆ ティー ＆ 満足度 -->
           <div class="flex items-center justify-between gap-2 flex-wrap mb-2.5">
             <div class="flex items-center gap-2 flex-wrap">
-              <span class="text-xs text-slate-600 font-semibold">
+              <span class="inline-flex items-center gap-1 text-xs text-slate-600 font-semibold">
+                <svg class="w-3.5 h-3.5 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                 <%= record.played_on.strftime("%Y/%m/%d") %>
               </span>
 
-              <!-- 休日（薄い赤/ピンク） / 平日（薄いブルー） -->
+              <!-- 休日 / 平日バッジ -->
               <% if record.played_on.saturday? || record.played_on.sunday? %>
                 <span class="bg-rose-100 text-rose-800 border border-rose-200 text-xs font-bold px-2.5 py-0.5 rounded-full">
-                  休日 ㊗️
+                  休日
                 </span>
               <% else %>
                 <span class="bg-sky-100 text-sky-800 border border-sky-200 text-xs font-bold px-2.5 py-0.5 rounded-full">
-                  平日 🔘
+                  平日
                 </span>
               <% end %>
 
@@ -42,21 +46,21 @@
                 </span>
               <% end %>
 
-              <!-- ティー（色別専用バッジ ＆ アイコン） -->
+              <!-- ティー（色別ドットバッジ） -->
               <% if record.tee.present? %>
                 <%
                   tee_config = case record.tee
-                    when "レディース", /赤/ then { class: "bg-rose-500 text-white", icon: "🔴" }
-                    when "ショート", /ピンク/ then { class: "bg-pink-400 text-white", icon: "🌸" }
-                    when "フロント", /ゴールド/, /緑/ then { class: "bg-amber-400 text-slate-900 font-bold", icon: "🟡" }
-                    when "レギュラー", /白/ then { class: "bg-white text-slate-800 font-bold border border-slate-300", icon: "⚪️" }
-                    when "バック", /青/, /黒/ then { class: "bg-slate-900 text-white", icon: "🔵" }
-                    else { class: "bg-emerald-800 text-white", icon: "⛳️" }
+                    when "レディース", /赤/ then { class: "bg-rose-500 text-white", dot: "bg-white" }
+                    when "ショート", /ピンク/ then { class: "bg-pink-400 text-white", dot: "bg-white" }
+                    when "フロント", /ゴールド/, /緑/ then { class: "bg-amber-400 text-slate-900 font-bold", dot: "bg-slate-900" }
+                    when "レギュラー", /白/ then { class: "bg-white text-slate-800 font-bold border border-slate-300", dot: "bg-slate-400" }
+                    when "バック", /青/, /黒/ then { class: "bg-slate-900 text-white", dot: "bg-white" }
+                    else { class: "bg-emerald-900 text-white", dot: "bg-emerald-300" }
                   end
                 %>
-                <span class="<%= tee_config[:class] %> text-xs font-semibold px-2.5 py-0.5 rounded-full shadow-xs inline-flex items-center gap-1">
+                <span class="<%= tee_config[:class] %> text-xs font-semibold px-2.5 py-0.5 rounded-full shadow-xs inline-flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full <%= tee_config[:dot] %>"></span>
                   <span><%= record.tee %></span>
-                  <span><%= tee_config[:icon] %></span>
                 </span>
               <% end %>
 
@@ -68,7 +72,7 @@
               <% end %>
             </div>
 
-            <!-- 満足度（少し大きめ＆目立つデザイン） -->
+            <!-- 満足度（SVG星アイコン） -->
             <%
               satisfaction_labels = {
                 "star1" => "不満",
@@ -78,9 +82,18 @@
                 "star5" => "大満足"
               }
               satisfaction_text = satisfaction_labels[record.satisfaction] || record.satisfaction
+              rating_num = record.satisfaction_before_type_cast.to_i
             %>
-            <div class="flex items-center gap-1.5 text-sm">
-              <span class="text-amber-500 font-bold text-base"><%= "⭐️" * record.satisfaction_before_type_cast.to_i %></span>
+            <div class="flex items-center gap-1.5">
+              <div class="flex items-center gap-0.5 text-amber-400">
+                <% (1..5).each do |i| %>
+                  <% if i <= rating_num %>
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <% else %>
+                    <svg class="w-4 h-4 text-slate-200 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <% end %>
+                <% end %>
+              </div>
               <span class="text-slate-700 font-bold bg-amber-100 border border-amber-200 px-2 py-0.5 rounded-full text-xs">
                 <%= satisfaction_text %>
               </span>
@@ -117,7 +130,7 @@
                 <span class="text-slate-400 italic text-xs">スコア未入力</span>
               <% end %>
 
-              <!-- 料金（料金: 〇〇円） -->
+              <!-- 料金 -->
               <% if record.total_cost.present? %>
                 <div>
                   <span class="font-semibold text-slate-700 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded text-xs">
@@ -129,7 +142,10 @@
 
             <!-- 詳細リンク -->
             <div class="flex items-center gap-3">
-              <%= link_to "詳細を見る →", record_path(record), class: "text-emerald-700 hover:text-emerald-900 font-bold transition" %>
+              <%= link_to record_path(record), class: "inline-flex items-center gap-1 text-emerald-700 hover:text-emerald-900 font-bold transition" do %>
+                詳細を見る
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              <% end %>
             </div>
           </div>
         </div>
@@ -138,6 +154,9 @@
   <% else %>
     <!-- カルテが0件のとき -->
     <div class="text-center py-16 bg-white rounded-3xl shadow-sm border border-slate-100 p-6">
+      <div class="w-12 h-12 mx-auto mb-3 text-slate-300 flex items-center justify-center">
+        <svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+      </div>
       <p class="text-slate-400 mb-4 text-base">まだ登録されたゴルフカルテがありません</p>
       <%= link_to "最初のカルテを登録してみる", new_record_path, class: "inline-block bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 px-6 rounded-xl transition shadow" %>
     </div>
