@@ -1,57 +1,79 @@
 <!-- メインヒーローセクション -->
-<div style="background-color: #f4f9f5; text-align: center; padding: 60px 20px; border-bottom: 1px solid #e2e8f0;">
-  <h1 style="font-size: 32px; font-weight: bold; color: #2d6a4f; margin-bottom: 16px;">
-    ⛳️ <span style="font-family: 'Josefin Sans', sans-serif; letter-spacing: 1px;">gollog</span>
-  </h1>
-  <p style="font-size: 18px; color: #4a5568; max-width: 600px; margin: 0 auto 24px auto; line-height: 1.6;">
-    自分視点の本音メモで、次のコース選びを最適化する<br>
-    <strong>自分専用ゴルフ場カルテ</strong>
-  </p>
+<section style="background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%); text-align: center; padding: clamp(48px, 8vw, 80px) 20px 40px; border-bottom: 1px solid #e2e8f0;">
+  <div style="max-width: 720px; margin: 0 auto;">
+    
+    <!-- サブキャッチ 1 -->
+    <p style="font-size: clamp(14px, 3.5vw, 16px); color: #2d6a4f; font-weight: 700; letter-spacing: 0.05em; margin: 0 0 8px 0;">
+      自分視点の本音メモで、次のコース選びを最適化
+    </p>
 
-  <!-- ユーザーの状態に応じたアクションボタン -->
-  <div style="margin-top: 24px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
-    <% if user_signed_in? %>
-      <%= link_to "📋 カルテ一覧を見る", records_path, style: "background-color: #2d6a4f; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" %>
-      <%= link_to "✏️ 新しいカルテを書く", new_record_path, style: "background-color: #ffffff; color: #2d6a4f; border: 2px solid #2d6a4f; padding: 10px 22px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;" %>
-    <% else %>
-      <%= link_to "🚀 無料ではじめる（登録）", new_user_registration_path, style: "background-color: #2d6a4f; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" %>
-      <%= link_to "🔑 ログイン", new_user_session_path, style: "background-color: #ffffff; color: #2d6a4f; border: 2px solid #2d6a4f; padding: 10px 22px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;" %>
-    <% end %>
+    <!-- サブキャッチ 2 -->
+    <p style="font-size: clamp(16px, 4vw, 20px); color: #334155; font-weight: 700; margin: 0 0 20px 0;">
+      自分専用 ゴルフ場カルテ
+    </p>
+
+    <!-- メインロゴ（レスポンシブ特大表示） -->
+    <h1 style="font-family: 'Josefin Sans', sans-serif; font-size: clamp(44px, 12vw, 68px); font-weight: 700; color: #2d6a4f; letter-spacing: 2px; line-height: 1.1; margin: 0 0 32px 0;">
+      gollog
+    </h1>
+
+    <!-- ユーザー状態に応じたアクションボタン -->
+    <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 12px;">
+      <% if user_signed_in? %>
+        <%= link_to "カルテ一覧を見る", records_path, style: "background-color: #2d6a4f; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: bold; display: inline-block; box-shadow: 0 4px 10px rgba(45, 106, 79, 0.25); min-width: 180px;" %>
+        <%= link_to "+ 新規カルテ作成", new_record_path, style: "background-color: #ffffff; color: #2d6a4f; border: 2px solid #2d6a4f; padding: 12px 26px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: bold; display: inline-block; min-width: 180px;" %>
+      <% else %>
+        <%= link_to "無料ではじめる（新規登録）", new_user_registration_path, style: "background-color: #2d6a4f; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: bold; display: inline-block; box-shadow: 0 4px 10px rgba(45, 106, 79, 0.25); min-width: 200px;" %>
+        <%= link_to "ログイン", new_user_session_path, style: "background-color: #ffffff; color: #2d6a4f; border: 2px solid #2d6a4f; padding: 12px 26px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: bold; display: inline-block; min-width: 120px;" %>
+      <% end %>
+    </div>
+
   </div>
-</div>
+</section>
 
-<!-- サービスの特徴（3選） -->
-<div style="max-width: 900px; margin: 50px auto; padding: 0 20px;">
-  <h2 style="text-align: center; font-size: 22px; color: #2d6a4f; margin-bottom: 36px;">
-    <span style="font-family: 'Josefin Sans', sans-serif; letter-spacing: 1px;">gollog</span> でできること
-  </h2>
+<!-- サービスの特徴セクション -->
+<section style="max-width: 960px; margin: 50px auto 60px; padding: 0 20px;">
+  <div style="text-align: center; margin-bottom: 40px;">
+    <h2 style="font-size: clamp(20px, 5vw, 24px); font-weight: 700; color: #1e293b; margin: 0 0 8px 0;">
+      <span style="font-family: 'Josefin Sans', sans-serif; color: #2d6a4f;">gollog</span> の特徴
+    </h2>
+    <p style="font-size: 13px; color: #64748b; margin: 0;">シンプルに、あなたのためのゴルフ記録を残す</p>
+  </div>
 
-  <div style="display: flex; gap: 20px; justify-content: space-between; flex-wrap: wrap;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
+    
     <!-- 特徴 1 -->
-    <div style="flex: 1; min-width: 250px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-      <div style="font-size: 30px; margin-bottom: 10px;">📝</div>
-      <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">自分視点の本音メモ</h3>
-      <p style="font-size: 14px; color: #718096; line-height: 1.5;">
-        コースの難易度やグリーンの状態、食事の感想など、自分だけのメモをサクッと記録。
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);">
+      <div style="display: inline-block; font-family: 'Josefin Sans', sans-serif; font-size: 13px; font-weight: 700; color: #2d6a4f; background: #e8f5e9; padding: 4px 10px; border-radius: 4px; margin-bottom: 14px;">
+        01
+      </div>
+      <h3 style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 8px 0;">自分視点の本音メモ</h3>
+      <p style="font-size: 13px; color: #64748b; line-height: 1.6; margin: 0;">
+        コースの難易度やグリーンの速さ、食事の満足度など、公の口コミには書けない率直な感想を記録できます。
       </p>
     </div>
 
     <!-- 特徴 2 -->
-    <div style="flex: 1; min-width: 250px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-      <div style="font-size: 30px; margin-bottom: 10px;">🔍</div>
-      <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">最適コースの検索</h3>
-      <p style="font-size: 14px; color: #718096; line-height: 1.5;">
-        「前回の印象はどうだったっけ？」をすぐに振り返り、次のラウンド選びを迷わない。
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);">
+      <div style="display: inline-block; font-family: 'Josefin Sans', sans-serif; font-size: 13px; font-weight: 700; color: #2d6a4f; background: #e8f5e9; padding: 4px 10px; border-radius: 4px; margin-bottom: 14px;">
+        02
+      </div>
+      <h3 style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 8px 0;">次のコース選びを最適化</h3>
+      <p style="font-size: 13px; color: #64748b; line-height: 1.6; margin: 0;">
+        「前回の印象はどうだったか」をラウンド前に素早く振り返り、リピートやコース選定の判断材料にできます。
       </p>
     </div>
 
     <!-- 特徴 3 -->
-    <div style="flex: 1; min-width: 250px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05討);">
-      <div style="font-size: 30px; margin-bottom: 10px;">📱</div>
-      <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">自分専用カルテ</h3>
-      <p style="font-size: 14px; color: #718096; line-height: 1.5;">
-        プレー実績が溜まるほど、あなたにとって最高のゴルフ場データベースが完成。
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);">
+      <div style="display: inline-block; font-family: 'Josefin Sans', sans-serif; font-size: 13px; font-weight: 700; color: #2d6a4f; background: #e8f5e9; padding: 4px 10px; border-radius: 4px; margin-bottom: 14px;">
+        03
+      </div>
+      <h3 style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 8px 0;">蓄積される専用データベース</h3>
+      <p style="font-size: 13px; color: #64748b; line-height: 1.6; margin: 0;">
+        カルテが増えるほど、あなた専用のコースデータが蓄積され、ゴルフライフの振り返りがより楽しくなります。
       </p>
     </div>
+
   </div>
-</div>
+</section>

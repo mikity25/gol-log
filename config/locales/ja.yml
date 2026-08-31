@@ -9,6 +9,7 @@ ja:
         email: "メールアドレス"
         password: "パスワード"
         password_confirmation: "パスワード（確認用）"
+        current_password: "現在のパスワード"
       record:
         golf_course_name: "ゴルフ場名"
         played_on: "プレー日"

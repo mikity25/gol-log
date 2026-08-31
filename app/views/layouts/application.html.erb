@@ -1,40 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "gollog - 自分専用ゴルフ場カルテ" %></title>
+    <title><%= content_for(:title) || "gollog - 自分専用 ゴルフ場カルテ" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="GOL-LOG">
+    <meta name="application-name" content="gollog">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= yield :head %>
 
-    <!-- ★ Google Fonts (ロゴ用: Josefin Sans / 日本語用: Zen Maru Gothic) -->
+    <!-- Google Fonts (ロゴ用: Josefin Sans / 日本語用: Zen Maru Gothic) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600;700&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
   <body class="bg-slate-50 text-slate-700 min-h-screen flex flex-col font-['Zen_Maru_Gothic',sans-serif] antialiased">
-    <!-- ① 共通ヘッダーの呼び出し -->
+    <!-- 共通ヘッダー -->
     <%= render "shared/header" %>
 
-    <!-- ② メインコンテンツ（各ページの画面が入る） -->
+    <!-- メインコンテンツ -->
     <main class="flex-1">
-      <!-- 💬 フラッシュメッセージ（お知らせ通知エリア） -->
+      <!-- フラッシュメッセージ（通知エリア） -->
       <% if notice %>
         <div class="max-w-2xl mx-auto mt-4 p-4 bg-emerald-50 border border-emerald-300 text-emerald-800 rounded-2xl shadow-sm text-center font-bold text-sm">
           <%= notice %>
@@ -49,7 +45,7 @@
       <%= yield %>
     </main>
 
-    <!-- ③ 共通フッターの呼び出し -->
+    <!-- 共通フッター -->
     <%= render "shared/footer" %>
   </body>
 </html>
