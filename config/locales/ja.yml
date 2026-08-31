@@ -5,9 +5,11 @@ ja:
       record: "ゴルフカルテ"
     attributes:
       user:
+        name: "名前"
         email: "メールアドレス"
         password: "パスワード"
         password_confirmation: "パスワード（確認用）"
+        current_password: "現在のパスワード"
       record:
         golf_course_name: "ゴルフ場名"
         played_on: "プレー日"
@@ -18,3 +20,12 @@ ja:
         score_18h: "18Hスコア"
         score_9h: "9Hスコア"
         memo: "ひとことメモ"
+    errors:
+      messages:
+        record_invalid: "バリデーションに失敗しました: %{errors}"
+        blank: "を入力してください"
+        taken: "はすでに存在します"
+  errors:
+    messages:
+      blank: "を入力してください"
+      not_a_number: "は数値で入力してください"

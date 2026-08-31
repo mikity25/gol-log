@@ -1,42 +1,60 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
+<div style="max-width: 420px; margin: 40px auto; padding: 32px 24px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); border: 1px solid #e2e8f0;">
+  <!-- 見出し -->
+  <div style="text-align: center; margin-bottom: 24px;">
+    <h2 style="font-size: 22px; font-weight: bold; color: #2d6a4f; margin-top: 8px;">アカウント設定</h2>
+    <p style="font-size: 13px; color: #718096; margin-top: 4px;">メールアドレス・パスワードの変更</p>
   </div>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <!-- メールアドレス -->
+    <div style="margin-bottom: 16px;">
+      <%= f.label :email, "メールアドレス", style: "display: block; font-weight: bold; font-size: 14px; color: #2d3748; margin-bottom: 6px;" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "golf@example.com", style: "width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; box-sizing: border-box;" %>
+    </div>
+
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div style="font-size: 12px; color: #d97706; background-color: #fef3c7; padding: 8px 12px; border-radius: 6px; margin-bottom: 16px;">
+        現在、確認待ちのメールアドレス: <%= resource.unconfirmed_email %>
+      </div>
+    <% end %>
+
+    <!-- 新しいパスワード -->
+    <div style="margin-bottom: 16px;">
+      <%= f.label :password, "新しいパスワード", style: "display: block; font-weight: bold; font-size: 14px; color: #2d3748; margin-bottom: 4px;" %>
+      <span style="font-size: 12px; color: #a0aec0; display: block; margin-bottom: 6px;">※ 変更しない場合は空欄のまま（6文字以上）</span>
+      <%= f.password_field :password, autocomplete: "new-password", placeholder: "••••••••", style: "width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; box-sizing: border-box;" %>
+    </div>
+
+    <!-- 新しいパスワード（確認用） -->
+    <div style="margin-bottom: 20px;">
+      <%= f.label :password_confirmation, "新しいパスワード（確認用）", style: "display: block; font-weight: bold; font-size: 14px; color: #2d3748; margin-bottom: 6px;" %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "••••••••", style: "width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; box-sizing: border-box;" %>
+    </div>
+
+    <hr style="border: none; border-top: 1px dashed #e2e8f0; margin: 20px 0;">
+
+    <!-- 現在のパスワード（変更保存用） -->
+    <div style="margin-bottom: 24px;">
+      <%= f.label :current_password, "現在のパスワード", style: "display: block; font-weight: bold; font-size: 14px; color: #2d3748; margin-bottom: 4px;" %>
+      <span style="font-size: 12px; color: #e53e3e; display: block; margin-bottom: 6px;">※ 変更を保存するには現在のパスワード入力が必要</span>
+      <%= f.password_field :current_password, autocomplete: "current-password", placeholder: "••••••••", style: "width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; box-sizing: border-box;" %>
+    </div>
+
+    <!-- 更新ボタン -->
+    <div style="margin-bottom: 16px;">
+      <%= f.submit "変更を保存する", style: "width: 100%; background-color: #2d6a4f; color: white; border: none; padding: 12px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s;" %>
+    </div>
   <% end %>
 
-  <div class="field">
-    <p><%= f.label :password %> <i>(leave blank if you don't want to change it)</i></p>
-    <p><%= f.password_field :password, autocomplete: "new-password" %></p>
-    <% if @minimum_password_length %>
-      <p><em><%= @minimum_password_length %> characters minimum</em></p>
-    <% end %>
+  <!-- カルテ一覧に戻る -->
+  <div style="text-align: center; margin-top: 16px;">
+    <%= link_to "← カルテ一覧に戻る", records_path, style: "color: #718096; font-size: 13px; text-decoration: none;" %>
   </div>
 
-  <div class="field">
-    <p><%= f.label :password_confirmation %></p>
-    <p><%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
+  <!-- アカウント削除（退会エリア） -->
+  <div style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #edf2f7; text-align: center;">
+    <%= button_to "アカウントを削除（退会）", registration_path(resource_name), data: { confirm: "本当に退会しますか？\n作成したゴルフカルテもすべて削除されます。", turbo_confirm: "本当に退会しますか？\n作成したゴルフカルテもすべて削除されます。" }, method: :delete, style: "background: none; border: none; color: #e53e3e; font-size: 12px; cursor: pointer; text-decoration: underline; padding: 0;" %>
   </div>
-
-  <div class="field">
-    <p><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i></p>
-    <p><%= f.password_field :current_password, autocomplete: "current-password" %></p>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<%= link_to "Back", :back %>
+</div>

@@ -6,3 +6,6 @@ import { application } from "./application"
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import RadioToggleController from "./radio_toggle_controller"
+application.register("radio-toggle", RadioToggleController)

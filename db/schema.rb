@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_30_123445) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_31_075557) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "records", force: :cascade do |t|
     t.string "bath_features"
     t.string "bath_memo"
+    t.string "bath_rating"
     t.string "brand"
     t.string "bunker_difficulty"
     t.string "cart_type"
@@ -27,9 +28,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_30_123445) do
     t.datetime "created_at", null: false
     t.string "difficulty"
     t.string "driving_range"
-    t.integer "facility"
     t.string "fairway"
-    t.integer "food"
     t.text "food_memo"
     t.string "food_rating"
     t.string "golf_course_name", null: false

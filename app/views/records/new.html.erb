@@ -1,10 +1,26 @@
-<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md mt-8">
-  <div class="mb-4">
-    <%= link_to "← カルテ一覧に戻る", records_path, class: "text-green-700 hover:underline text-sm font-semibold" %>
+<div class="max-w-3xl mx-auto py-8 px-4">
+  <!-- 戻るリンク -->
+  <div class="mb-6">
+    <%= link_to records_path, class: "inline-flex items-center gap-1.5 text-emerald-700 hover:text-emerald-900 text-sm font-semibold transition" do %>
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      カルテ一覧に戻る
+    <% end %>
   </div>
 
-  <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">⛳️ ゴルフカルテ新規作成</h1>
+  <!-- タイトル見出し -->
+  <div class="mb-8">
+    <div class="inline-flex items-center gap-2 mb-1">
+      <svg class="w-6 h-6 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 20h9"></path>
+        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+      </svg>
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight">新規ゴルフカルテ作成</h1>
+    </div>
+    <p class="text-xs sm:text-sm text-slate-500">
+      ラウンドの体験やコースの印象を記録しましょう
+    </p>
+  </div>
 
-  <!-- 部品（_form）を呼び出す -->
+  <!-- フォーム本体 -->
   <%= render "form", record: @record, button_text: "カルテを保存する" %>
 </div>

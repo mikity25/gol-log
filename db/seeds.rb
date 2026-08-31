@@ -1,9 +1,250 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# 既存のデータを初期化
+puts "データを初期化中..."
+Record.destroy_all
+User.destroy_all
+
+# テストログイン用ユーザー
+test_user = User.create!(
+  name: "テストゴルファー",
+  email: "test@example.com",
+  password: "password",
+  password_confirmation: "password"
+)
+puts "テストユーザーを作成: #{test_user.email} (PW: password)"
+
+sample_records = [
+  # ① 全項目みっちり入力 ＆ 絵文字あり ＆ 18H
+  {
+    golf_course_name: "エメラルドフォレスト ゴルフ倶楽部",
+    played_on: 1.day.ago.to_date,
+    satisfaction: "star5",
+    tee: "レギュラー",
+    weather: "晴れ",
+    companion: "ゴルフ仲間",
+    pace: "スムーズ・空いていた",
+    score_18h: 86,
+    score_9h: nil,
+    total_cost: 14800,
+    cost_memo: "平日WEB早割プラン（昼食付き）",
+    plan_options: [ "昼食付", "乗り入れ可" ],
+    food_rating: "とても美味しい",
+    food_memo: "名物の特製ビーフカレーが最高に美味しかった🍛✨",
+    play_style: "通常(ハーフ休憩あり)",
+    brand: "アコーディア",
+    difficulty: "普通",
+    course_width: "広い（フェアウェイ乗せやすい）",
+    fairway: "フラット(平坦)",
+    ob_risk: "出にくい(安心)",
+    bunker_difficulty: "普通",
+    hazard: "適度にある",
+    green_features: [ "グリーン速い", "傾斜・2段グリーン強め" ],
+    green_memo: "下りのパットが転がりすぎて難しかった⛳️",
+    cart_type: "リモコン電磁誘導",
+    toilet_rating: "多い",
+    maintenance: "素晴らしい",
+    service: "丁寧で心地よい",
+    driving_range: [ "打ちっぱなし", "アプローチ練習場" ],
+    shop_memo: "最新ボールや限定マーカーが充実していた🏌️‍♂️",
+    bath_rating: "大満足",
+    bath_features: [ "温泉あり", "サウナあり", "高級ドライヤー(ReFa等)あり" ],
+    bath_memo: "リファのドライヤーとサウナがあって最高のととのい♨️✨",
+    memo: "ドライバーが安定してて今年ベストスコア更新！🎉\nお昼も美味しくてリピート決定！"
+  },
+
+  # ② 必須項目のみ ＆ 絵文字なし（最小限入力）
+  {
+    golf_course_name: "サンライズヒルズ カントリークラブ",
+    played_on: 4.days.ago.to_date,
+    satisfaction: "star3",
+    tee: nil,
+    weather: nil,
+    companion: nil,
+    pace: nil,
+    score_18h: nil,
+    score_9h: nil,
+    total_cost: nil,
+    cost_memo: nil,
+    plan_options: [],
+    food_rating: nil,
+    food_memo: nil,
+    play_style: nil,
+    brand: nil,
+    difficulty: nil,
+    course_width: nil,
+    fairway: nil,
+    ob_risk: nil,
+    bunker_difficulty: nil,
+    hazard: nil,
+    green_features: [],
+    green_memo: nil,
+    cart_type: nil,
+    toilet_rating: nil,
+    maintenance: nil,
+    service: nil,
+    driving_range: [],
+    shop_memo: nil,
+    bath_rating: nil,
+    bath_features: [],
+    bath_memo: nil,
+    memo: nil
+  },
+
+  # ③ ハーフ9H ＆ ショートティー ＆ 絵文字なし（真面目メモ）
+  {
+    golf_course_name: "リバーサイド グリーンパーク",
+    played_on: 8.days.ago.to_date,
+    satisfaction: "star4",
+    tee: "ショート",
+    weather: "くもり",
+    companion: "1人",
+    pace: "スムーズ・空いていた",
+    score_18h: nil,
+    score_9h: 39,
+    total_cost: 3800,
+    cost_memo: "薄暮9Hセルフ",
+    plan_options: [ "手引き・歩き" ],
+    food_rating: nil,
+    food_memo: nil,
+    play_style: "薄暮ハーフ",
+    brand: "市営・パブリック",
+    difficulty: "易しい",
+    course_width: "やや狭い",
+    fairway: "フラット(平坦)",
+    ob_risk: "出やすい(狭い)",
+    bunker_difficulty: "少ない・浅い",
+    hazard: "ほぼなし",
+    green_features: [ "グリーン遅い", "広くて乗りやすい" ],
+    green_memo: "芝目が強いため強気に打つ必要がある。",
+    cart_type: "手引き・歩き",
+    toilet_rating: "普通",
+    maintenance: "普通",
+    service: "普通",
+    driving_range: [ "パター練習のみ" ],
+    shop_memo: "自販機のみ設置あり。",
+    bath_rating: "少し残念",
+    bath_features: [ "シャワーのみ" ],
+    bath_memo: "夕方プレーのためシャワーのみ利用可能だった。",
+    memo: "アプローチの距離感とショートパットの集中練習。\n9ホールサクッと回れてコストパフォーマンスが良い。"
+  },
+
+  # ④ バックティー ＆ 雨 ＆ 難関コース ＆ 絵文字あり
+  {
+    golf_course_name: "ロイヤルリンクス インターナショナル",
+    played_on: 15.days.ago.to_date,
+    satisfaction: "star2",
+    tee: "バック",
+    weather: "雨",
+    companion: "コンペ",
+    pace: "待ち多め・混雑",
+    score_18h: 104,
+    score_9h: nil,
+    total_cost: 22000,
+    cost_memo: "コンペ参加費込み",
+    plan_options: [ "キャディ付", "昼食付" ],
+    food_rating: "普通",
+    food_memo: "天ざる蕎麦を食べた",
+    play_style: "コンペ",
+    brand: "太平洋クラブ",
+    difficulty: "難しい・戦略的",
+    course_width: "狭い（プレッシャーあり）",
+    fairway: "アンジュレーション強め",
+    ob_risk: "出やすい(狭い)",
+    bunker_difficulty: "アゴが高い(脱出難)",
+    hazard: "池・谷越え多め",
+    green_features: [ "砲台グリーン多め", "傾斜・2段グリーン強め", "狭くて乗せにくい" ],
+    green_memo: "ピン位置が傾斜の途中にあって3パット連発…😭",
+    cart_type: "自走カート",
+    toilet_rating: "普通",
+    maintenance: "良い",
+    service: "良い",
+    driving_range: [ "打ちっぱなし", "アプローチ練習場", "バンカー練習場" ],
+    shop_memo: "コンペ賞品用の地元名産品が多数あり。",
+    bath_rating: "普通",
+    bath_features: [ "サウナあり" ],
+    bath_memo: "雨で体が冷えていたのでお風呂が沁みた🛁",
+    memo: "大雨と強風で大叩き☔️💨 バンカーのアゴが高すぎて1回で出ず。\n晴れた日に万全のコンディションでリベンジしたい🔥"
+  },
+
+  # ⑤ レディースティー ＆ 施設充実 ＆ 食事重視（絵文字あり）
+  {
+    golf_course_name: "高原レイクサイド カントリークラブ",
+    played_on: 22.days.ago.to_date,
+    satisfaction: "star5",
+    tee: "レディース",
+    weather: "晴れ",
+    companion: "友人",
+    pace: "普通",
+    score_18h: 93,
+    score_9h: nil,
+    total_cost: 16500,
+    cost_memo: "レディース優待プラン（スイーツ付）",
+    plan_options: [ "昼食付", "クールカート" ],
+    food_rating: "とても美味しい",
+    food_memo: "ランチのパスタと限定のデザートプレートが美味しかった🍰💕",
+    play_style: "通常(ハーフ休憩あり)",
+    brand: "東急リゾート",
+    difficulty: "普通",
+    course_width: "普通",
+    fairway: "フラット(平坦)",
+    ob_risk: "出にくい(安心)",
+    bunker_difficulty: "普通",
+    hazard: "適度にある",
+    green_features: [ "広くて乗りやすい" ],
+    green_memo: "芝がしっかり刈られていて素直な転がり🌸",
+    cart_type: "リモコン電磁誘導",
+    toilet_rating: "多い",
+    maintenance: "素晴らしい",
+    service: "丁寧で心地よい",
+    driving_range: [ "打ちっぱなし" ],
+    shop_memo: "可愛いゴルフウェアや小物がたくさん売ってた👗🛍️",
+    bath_rating: "大満足",
+    bath_features: [ "温泉あり", "高級ドライヤー(ReFa等)あり", "アメニティ充実" ],
+    bath_memo: "化粧水やアメニティが豊富でパウダールームが個室風🧴✨ 温泉も最高！",
+    memo: "クラブハウスもお手洗いもお風呂もすべてピカピカで感動🥰\nまた女子会で利用したい！"
+  },
+
+  # ⑥ フロントティー ＆ 強風 ＆ 簡潔メモ（絵文字なし）
+  {
+    golf_course_name: "オーシャンビュー ゴルフリンクス",
+    played_on: 30.days.ago.to_date,
+    satisfaction: "star4",
+    tee: "フロント",
+    weather: "強風",
+    companion: "家族",
+    pace: "普通",
+    score_18h: 91,
+    score_9h: nil,
+    total_cost: 12000,
+    cost_memo: "通常セルフプラン",
+    plan_options: [ "昼食付" ],
+    food_rating: "美味しい",
+    food_memo: "海鮮丼",
+    play_style: "スループレー",
+    brand: "PGM",
+    difficulty: "普通",
+    course_width: "普通",
+    fairway: "適度な起伏(普通)",
+    ob_risk: "出にくい(安心)",
+    bunker_difficulty: "普通",
+    hazard: "適度にある",
+    green_features: [ "グリーン速い" ],
+    green_memo: "風の影響でアゲインスト時の距離感がシビア。",
+    cart_type: "自走カート",
+    toilet_rating: "普通",
+    maintenance: "良い",
+    service: "良い",
+    driving_range: [ "打ちっぱなし" ],
+    shop_memo: nil,
+    bath_rating: "満足",
+    bath_features: [ "温泉あり" ],
+    bath_memo: "海が見える露天風呂だった。",
+    memo: "風が強かったが景色が素晴らしく気持ちよくプレーできた。\n家族全員満足していたのでまた来たい。"
+  }
+]
+
+# レコード生成
+sample_records.each do |data|
+  test_user.records.create!(data)
+end
+
+puts "#{test_user.records.count} 件のテストカルテを作成完了しました"
