@@ -1,90 +1,86 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  # Settings specified here will take precedence over those in config/application.rb.
+  # config/application.rb の設定より、このファイルの設定が優先
 
-  # Code is not reloaded between requests.
+  # ----------------------------------------------------
+  # コード読み込み・エラー表示設定
+  # ----------------------------------------------------
+  # リクエストごとのコード再読み込みを無効化（本番パフォーマンス向上）
   config.enable_reloading = false
 
-  # Eager load code on boot for better performance and memory savings (ignored by Rake tasks).
+  # 起動時にコードを一括事前読み込み（メモリ節約・実行速度向上）
   config.eager_load = true
 
-  # Full error reports are disabled.
+  # 詳細なエラー画面を表示しない（セキュリティ対策）
   config.consider_all_requests_local = false
 
-  # Turn on fragment caching in view templates.
+  # ビューテンプレートのフラグメントキャッシュを有効化
   config.action_controller.perform_caching = true
 
-  # Cache assets for far-future expiry since they are all digest stamped.
+  # 静的アセット（CSS/JS等）のブラウザキャッシュ期間を1年に設定（ダイジェスト付きアセット用）
   config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
 
-  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  # config.asset_host = "http://assets.example.com"
-
-  # Store uploaded files on the local file system (see config/storage.yml for options).
+  # ファイルアップロードの保存先（ローカルディスク）
   config.active_storage.service = :local
 
-  # Assume all access to the app is happening through a SSL-terminating reverse proxy.
+  # ----------------------------------------------------
+  # SSL / セキュリティ設定
+  # ----------------------------------------------------
+  # SSL終端リバースプロキシ経由のアクセスを前提にする（Render等のPaaS環境用）
   config.assume_ssl = true
 
-  # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
+  # すべての通信をHTTPSに強制（HSTS・セキュアクッキー適用）
   config.force_ssl = true
 
-  # Skip http-to-https redirect for the default health check endpoint.
-  # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
-
-  # Log to STDOUT with the current request id as a default log tag.
+  # ----------------------------------------------------
+  # ログ設定
+  # ----------------------------------------------------
+  # リクエストIDをログのタグとして付与
   config.log_tags = [ :request_id ]
   config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
 
-  # Change to "debug" to log everything (including potentially personally-identifiable information!).
+  # ログレベルの設定（環境変数 RAILS_LOG_LEVEL がなければ info）
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
-  # Prevent health checks from clogging up the logs.
+  # ヘルスチェック（/up）のログ出力を抑制してログの圧迫を防止
   config.silence_healthcheck_path = "/up"
 
-  # Don't log any deprecations.
+  # 非推奨警告（Deprecation）のログ出力を無効化
   config.active_support.report_deprecations = false
 
-  # Replace the default in-process memory cache store with a durable alternative.
+  # ----------------------------------------------------
+  # キャッシュ・バックグラウンドジョブ設定（Rails 8標準）
+  # ----------------------------------------------------
+  # キャッシュストアに Solid Cache を使用
   config.cache_store = :solid_cache_store
 
-  # Replace the default in-process and non-durable queuing backend for Active Job.
+  # Active Job のバックエンドに Solid Queue を使用
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  # ----------------------------------------------------
+  # メール送信設定（Action Mailer）
+  # ----------------------------------------------------
+  # パスワード再設定等のリンク生成用ホスト名（本番ドメイン）
+  config.action_mailer.default_url_options = { host: "gollog.onrender.com", protocol: "https" }
 
-  # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  # メール送信失敗時に500エラーでアプリを落とさない設定
+  config.action_mailer.raise_delivery_errors = false
 
-  # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
-  # config.action_mailer.smtp_settings = {
-  #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
-  #   password: Rails.application.credentials.dig(:smtp, :password),
-  #   address: "smtp.example.com",
-  #   port: 587,
-  #   authentication: :plain
-  # }
+  # MVP段階の送信シミュレーション設定（外部SMTP未契約時の接続拒否エラー防止）
+  # ※ 本リリースでSendGrid等を導入する際に delivery_method = :smtp へ移行
+  config.action_mailer.delivery_method = :test
 
-  # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
-  # the I18n.default_locale when a translation cannot be found).
+  # ----------------------------------------------------
+  # 国際化（I18n）＆ データベース設定
+  # ----------------------------------------------------
+  # 翻訳が見つからない場合のフォールバックを有効化
   config.i18n.fallbacks = true
 
-  # Do not dump schema after migrations.
+  # マイグレーション実行後に schema.rb をダンプしない（本番実行の高速化）
   config.active_record.dump_schema_after_migration = false
 
-  # Only use :id for inspections in production.
+  # 本番でのモデル詳細出力（inspect）を :id のみに制限（個人情報・秘密情報の保護）
   config.active_record.attributes_for_inspect = [ :id ]
-
-  # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
-  #
-  # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
