@@ -42,13 +42,15 @@ RSpec.describe 'パスワードリセット', type: :system do
       expect(page).to have_current_path root_path
     end
 
-    it '登録されていないメールアドレスを入力した場合、エラーメッセージが表示されること' do
+    it '登録されていないメールアドレスを入力した場合でも、登録有無を特定させない案内メッセージが表示されメールが送信されないこと' do
       visit new_user_password_path
 
       fill_in 'メールアドレス', with: 'unknown_user@example.com'
       click_button '再設定メールを送信する'
 
-      expect(page).to have_content 'メールアドレス は見つかりませんでした。'
+      # アカウント列挙対策（paranoidモード）のメッセージ確認
+      expect(page).to have_content 'メールアドレスが登録されている場合、パスワード再設定の手順を記載したメールを送信しました。'
+      expect(page).to have_current_path new_user_session_path
       expect(ActionMailer::Base.deliveries.size).to eq 0
     end
   end

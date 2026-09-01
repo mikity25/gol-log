@@ -8,8 +8,8 @@ Devise.setup do |config|
   require "devise/orm/active_record"
 
   # 認証キーの設定（メールアドレスで認証）
-  config.case_insensitive_keys = [:email]
-  config.strip_whitespace_keys = [:email]
+  config.case_insensitive_keys = [ :email ]
+  config.strip_whitespace_keys = [ :email ]
 
   # 【セキュリティ対策】ユーザー列挙・特定攻撃の防止
   # パスワード再設定などで、メアドの登録有無に関わらず同じメッセージを返してアカウントの存在特定を防ぐ
