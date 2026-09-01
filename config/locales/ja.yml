@@ -11,21 +11,57 @@ ja:
         password_confirmation: "パスワード（確認用）"
         current_password: "現在のパスワード"
       record:
+        # 基本情報（必須）
         golf_course_name: "ゴルフ場名"
         played_on: "プレー日"
         satisfaction: "総合満足度"
-        difficulty: "難易度"
-        weather: "天候"
-        tee: "使用ティー"
+        # 料金プラン・食事
+        total_cost: "総額料金"
+        cost_memo: "プランメモ"
+        plan_options: "プラン・オプション"
+        food_rating: "レストラン評価"
+        food_memo: "食事メモ"
+        # ラウンド環境・スコア
         score_18h: "18Hスコア"
         score_9h: "9Hスコア"
-        memo: "ひとことメモ"
+        companion: "同伴者"
+        tee: "使用ティー"
+        weather: "天気"
+        pace: "進行状況"
+        play_style: "プレースタイル"
+        brand: "ゴルフ場系列・ブランド"
+        # コースの特徴・難易度
+        difficulty: "総合難易度"
+        course_width: "コースの広さ"
+        fairway: "フェアウェイ起伏"
+        ob_risk: "OBの出やすさ"
+        bunker_difficulty: "バンカーの難しさ"
+        hazard: "ハザードの多さ"
+        green_features: "グリーン傾向"
+        green_memo: "グリーン補足メモ"
+        # 設備
+        cart_type: "カート・移動方式"
+        toilet_rating: "コース内トイレ"
+        maintenance: "コースメンテナンス"
+        service: "スタッフ接客"
+        driving_range: "練習場設備"
+        shop_memo: "売店・自販機メモ"
+        # お風呂・アメニティ
+        bath_rating: "お風呂評価"
+        bath_features: "お風呂設備・特徴"
+        bath_memo: "お風呂補足メモ"
+        # メモ
+        memo: "メモ・振り返り"
     errors:
       models:
         user:
           attributes:
             email:
               taken: "は使用できません"
+        record:
+          attributes:
+            golf_course_name:
+              taken: "は同じ日にすでに登録されています"
       messages:
         record_invalid: "バリデーションに失敗しました: %{errors}"
         blank: "を入力してください"
@@ -34,6 +70,14 @@ ja:
         too_short: "は%{count}文字以上で入力してください"
         too_long: "は%{count}文字以内で入力してください"
         invalid: "は不正な値です"
+        not_a_number: "は数値で入力してください"
+        greater_than_or_equal_to: "は%{count}以上で入力してください"
+        less_than_or_equal_to: "は%{count}以内で入力してください"
+        greater_than: "は%{count}より大きい値にしてください"
+        less_than: "は%{count}より小さい値にしてください"
+        equal_to: "は%{count}にしてください"
+        odd: "は奇数にしてください"
+        even: "は偶数にしてください"
   errors:
     messages:
       blank: "を入力してください"
@@ -42,3 +86,10 @@ ja:
       too_short: "は%{count}文字以上で入力してください"
       too_long: "は%{count}文字以内で入力してください"
       invalid: "は不正な値です"
+      greater_than_or_equal_to: "は%{count}以上で入力してください"
+      less_than_or_equal_to: "は%{count}以内で入力してください"
+      greater_than: "は%{count}より大きい値にしてください"
+      less_than: "は%{count}より小さい値にしてください"
+      equal_to: "は%{count}にしてください"
+      odd: "は奇数にしてください"
+      even: "は偶数にしてください"
